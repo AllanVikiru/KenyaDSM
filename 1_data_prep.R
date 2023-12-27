@@ -22,3 +22,16 @@ raw_foods <- raw_foods[!duplicated(raw_foods$Vegetable), ] # remove duplicate fo
 raw_foods <- raw_foods %>% mutate_at(c('Calcium', 'Magnesium', 'Potassium', 'Sodium'), as.numeric) # convert nutrients to num
 raw_foods <- raw_foods %>% mutate(across(where(is.numeric), round, 3)) # round off to 3.dp
 write.csv(raw_foods, "veg_nutrients.csv", row.names=FALSE) # export csv
+
+# descriptive stats of veg nutrents
+summary(raw_foods)
+boxplot(raw_foods[,2:5])
+# select potassium because of uniform distribution and reject sodium 
+boxplot(raw_foods$Potassium)
+# compare Mg and Ca since they are similar
+hist(raw_foods$Magnesium)
+hist(raw_foods$Calcium)
+# select Magnesium for slightly more varied distribution between Mg and Ca
+
+#export veg, potassium and magnesium data
+write.csv(raw_foods[,c(1,3,4)], "veg_k_mg.csv", row.names=FALSE) # export csv
