@@ -23,7 +23,7 @@ raw_foods <- raw_foods %>% mutate_at(c('Calcium', 'Magnesium', 'Potassium', 'Sod
 raw_foods <- raw_foods %>% mutate(across(where(is.numeric), round, 3)) # round off to 3.dp
 write.csv(raw_foods, "veg_nutrients.csv", row.names=FALSE) # export csv
 
-# descriptive stats of veg nutrents
+# descriptive stats of veg nutrients
 summary(raw_foods)
 boxplot(raw_foods[,2:5])
 # select potassium because of uniform distribution and reject sodium 
@@ -35,3 +35,33 @@ hist(raw_foods$Calcium)
 
 #export veg, potassium and magnesium data
 write.csv(raw_foods[,c(1,3,4)], "veg_k_mg.csv", row.names=FALSE) # export csv
+
+#prepare soil data
+#read TIFF files
+library(raster)
+
+af_k <- raster("af250m_nutrient_k_m_agg30cm.tif")
+af_mg <- raster("af250m_nutrient_mg_m_agg30cm.tif")
+plot(af_k)
+plot(af_mg)
+
+#crop Kenya based on coordinates
+ken <- as(extent(34,42, -5, 5), 'SpatialPolygons')
+crs(ken) <- "+proj=longlat +datum=WGS84 +no_defs" #set crs
+ken_k <- crop(af_k, ken)
+ken_mg <- crop(af_mg,ken)
+
+# derive data points from raster layers
+values(ken_k)
+
+# prepare data points and plot on map
+library(sf)
+library(ggplot2)
+library(RColorBrewer)
+
+soil_pts = st_as_sf(isda_soil, coords = c('longitude', 'latitude'), crs = "+init=EPSG:32737")
+ke_area<- st_read("./ke_shp", "ken_admbnda_adm0_iebc_20191031")
+
+plot(st_geometry(ke_area$geometry), axes = TRUE, graticule = TRUE)
+plot(soil_pts, axes = TRUE, graticule = TRUE, pch = 16, 
+     pal = brewer.pal(5, 'Paired'), add = TRUE)
