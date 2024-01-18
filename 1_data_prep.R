@@ -39,20 +39,39 @@ write.csv(raw_foods[,c(1,3,4)], "veg_k_mg.csv", row.names=FALSE) # export csv
 #prepare soil data
 #read TIFF files
 library(raster)
+library(terra)
 
 af_k <- raster("af250m_nutrient_k_m_agg30cm.tif")
 af_mg <- raster("af250m_nutrient_mg_m_agg30cm.tif")
 plot(af_k)
 plot(af_mg)
 
-#crop Kenya based on coordinates
+#bind Kenya based on coordinates
 ken <- as(extent(34,42, -5, 5), 'SpatialPolygons')
 crs(ken) <- "+proj=longlat +datum=WGS84 +no_defs" #set crs
 ken_k <- crop(af_k, ken)
 ken_mg <- crop(af_mg,ken)
 
 # derive data points from raster layers
-values(ken_k)
+ken_k_spdf <- extract(ken_k, SpatialPoints(ken_k),sp=T)
+ken_mg_spdf <- extract(ken_mg, SpatialPoints(ken_mg), sp=T)
+
+# prepare dataset
+ken_k_mg_pts <- cbind(ken_k_spdf@coords, ken_k_spdf@data, ken_mg_spdf@data)
+colnames(ken_k_mg_pts) <- c('lat', 'long', 'k', 'mg')
+summary(ken_k_mg_pts)
+
+ken_k_mg_pts <- na.omit(ken_k_mg_pts) # remove null values
+
+#aggregate data points to reduce data size
+library(sp)
+library(spatstat)
+library(maptools)
+
+s
+
+#export csv
+write.csv(ken_k_mg_pts, "soil_k_mg.csv", row.names=FALSE) # export csv
 
 # prepare data points and plot on map
 library(sf)
