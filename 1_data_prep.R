@@ -40,38 +40,50 @@ write.csv(raw_foods[,c(1,3,4)], "veg_k_mg.csv", row.names=FALSE) # export csv
 #read TIFF files
 library(raster)
 library(terra)
-
+library(sf)
 af_k <- raster("af250m_nutrient_k_m_agg30cm.tif")
 af_mg <- raster("af250m_nutrient_mg_m_agg30cm.tif")
-plot(af_k)
-plot(af_mg)
 
-#bind Kenya based on coordinates
-ken <- as(extent(34,42, -5, 5), 'SpatialPolygons')
-crs(ken) <- "+proj=longlat +datum=WGS84 +no_defs" #set crs
+# bind KE based on coordinates
+ken<- st_read("./ke_shp", "ken_admbnda_adm1_iebc_20191031")
+ke_crs <- "+proj=longlat +datum=WGS84 +no_defs" # set crs
+ke_epsg <- 32737 # "+init=EPSG:32737"
 ken_k <- crop(af_k, ken)
 ken_mg <- crop(af_mg,ken)
+writeRaster(ken_k, 'kenya_k.tif') # export .tif files to relieve memory usage
+writeRaster(ken_mg, 'kenya_mg.tif')
 
 # derive data points from raster layers
+ken_k <- raster("kenya_k.tif")
+ken_mg <- raster("kenya_mg.tif")
 ken_k_spdf <- extract(ken_k, SpatialPoints(ken_k),sp=T)
 ken_mg_spdf <- extract(ken_mg, SpatialPoints(ken_mg), sp=T)
+ken_k_mg_df <- cbind(ken_k_spdf@coords, ken_k_spdf@data, ken_mg_spdf@data)
 
-# prepare dataset
-ken_k_mg_pts <- cbind(ken_k_spdf@coords, ken_k_spdf@data, ken_mg_spdf@data)
-colnames(ken_k_mg_pts) <- c('lat', 'long', 'k', 'mg')
-summary(ken_k_mg_pts)
+# prepare full soil dataset
+colnames(ken_k_mg_df) <- c('long', 'lat', 'k', 'mg')
+summary(ken_k_mg_df)
+ken_k_mg_df <- na.omit(ken_k_mg_df) # remove null values
+write.csv(ken_k_mg_df, "soil_k_mg.csv", row.names=FALSE) # export csv
 
-ken_k_mg_pts <- na.omit(ken_k_mg_pts) # remove null values
+## PROCESSES DONE IN QGIS ##
 
-#aggregate data points to reduce data size
-library(sp)
-library(spatstat)
-library(maptools)
+#aggregate/cluster data points to reduce data size (DBSCAN CANT DERIVE CENTRES)
+library(dbscan)
 
-s
+k_train <- st_read("./soil_shp", "k_train_pts")
+k_test <- st_read("./soil_shp", "k_test_pts")
+  
+k_coords <- ken_k_mg_pts[1:2]
+eps_plot <- kNNdistplot(k_, minPts = 3) # define suitable distance for k with minPts = dimensionality + 1
 
-#export csv
-write.csv(ken_k_mg_pts, "soil_k_mg.csv", row.names=FALSE) # export csv
+db <- dbscan(ken_coords, eps = 0.0045, minPts = 2) # define clusters
+plot(ken_coords$long, ken_coords$lat, col = db$cluster, pch=20)
+clr_centres <- st_coordinates(st_centroid(st_sfc(st_multipoint(ken_coords[db$cluster != 0,]))))
+
+# perform point_in_polygon
+ken_k_mg_sf <- st_as_sf(ken_k_mg_pts, coords = c("long", "lat")) %>% st_set_crs(., ke_crs)
+ken_k_mg_pts <- st_intersection(ke_area_sf,ken_k_mg_sf$geometry)
 
 # prepare data points and plot on map
 library(sf)
@@ -79,8 +91,6 @@ library(ggplot2)
 library(RColorBrewer)
 
 soil_pts = st_as_sf(isda_soil, coords = c('longitude', 'latitude'), crs = "+init=EPSG:32737")
-ke_area<- st_read("./ke_shp", "ken_admbnda_adm0_iebc_20191031")
-
 plot(st_geometry(ke_area$geometry), axes = TRUE, graticule = TRUE)
 plot(soil_pts, axes = TRUE, graticule = TRUE, pch = 16, 
      pal = brewer.pal(5, 'Paired'), add = TRUE)
