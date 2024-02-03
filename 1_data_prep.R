@@ -6,7 +6,7 @@ library(readxl)
 library(dplyr)
 
 #import raw data
-setwd("D:/r/KenyaDSM/data")
+setwd("E:/r/KenyaDSM/data")
 raw_foods <- as.data.frame(read_excel("food_composition_tables.xlsx", 4))
 
 # clean data
@@ -41,17 +41,18 @@ write.csv(raw_foods[,c(1,3,4)], "veg_k_mg.csv", row.names=FALSE) # export csv
 library(raster)
 library(terra)
 library(sf)
+
 af_k <- raster("af250m_nutrient_k_m_agg30cm.tif")
 af_mg <- raster("af250m_nutrient_mg_m_agg30cm.tif")
 
 # bind KE based on coordinates
 ken<- st_read("./ke_shp", "ken_admbnda_adm1_iebc_20191031")
 ke_crs <- "+proj=longlat +datum=WGS84 +no_defs" # set crs
-ke_epsg <- 32737 # "+init=EPSG:32737"
+ke_epsg <- 32737 # "+init=EPSG:32737" # world espg: 4326 (recommended for covariates)
 ken_k <- crop(af_k, ken)
 ken_mg <- crop(af_mg,ken)
-writeRaster(ken_k, 'kenya_k.tif') # export .tif files to relieve memory usage
-writeRaster(ken_mg, 'kenya_mg.tif')
+writeRaster(ken_k, 'ken_k.tif') # export .tif files to relieve memory usage
+writeRaster(ken_mg, 'ken_mg.tif')
 
 # derive data points from raster layers
 ken_k <- raster("kenya_k.tif")
@@ -68,29 +69,15 @@ write.csv(ken_k_mg_df, "soil_k_mg.csv", row.names=FALSE) # export csv
 
 ## PROCESSES DONE IN QGIS ##
 
-#aggregate/cluster data points to reduce data size (DBSCAN CANT DERIVE CENTRES)
-library(dbscan)
-
-k_train <- st_read("./soil_shp", "k_train_pts")
-k_test <- st_read("./soil_shp", "k_test_pts")
-  
-k_coords <- ken_k_mg_pts[1:2]
-eps_plot <- kNNdistplot(k_, minPts = 3) # define suitable distance for k with minPts = dimensionality + 1
-
-db <- dbscan(ken_coords, eps = 0.0045, minPts = 2) # define clusters
-plot(ken_coords$long, ken_coords$lat, col = db$cluster, pch=20)
-clr_centres <- st_coordinates(st_centroid(st_sfc(st_multipoint(ken_coords[db$cluster != 0,]))))
-
-# perform point_in_polygon
-ken_k_mg_sf <- st_as_sf(ken_k_mg_pts, coords = c("long", "lat")) %>% st_set_crs(., ke_crs)
-ken_k_mg_pts <- st_intersection(ke_area_sf,ken_k_mg_sf$geometry)
-
-# prepare data points and plot on map
+# covariate preparation and selection
+library(raster)
+library(terra)
 library(sf)
-library(ggplot2)
-library(RColorBrewer)
-
-soil_pts = st_as_sf(isda_soil, coords = c('longitude', 'latitude'), crs = "+init=EPSG:32737")
-plot(st_geometry(ke_area$geometry), axes = TRUE, graticule = TRUE)
-plot(soil_pts, axes = TRUE, graticule = TRUE, pch = 16, 
-     pal = brewer.pal(5, 'Paired'), add = TRUE)
+library(stars)
+setwd("E:/r/KenyaDSM/data/covariates_shp")
+# soil pH
+ph<- st_read("./soil_ph","ken_soil_ph")
+# rasterize based on geometry and a column named "value". Change the name of this column if necessary
+ph_rast<-st_rasterize(ph %>% dplyr::select(PHAQ, geometry))
+remove(ph_rast)
+writeRaster(ph_rast, 'ken_ph.tif')

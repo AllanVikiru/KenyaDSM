@@ -9,7 +9,7 @@ PDAL version: 2.5.5 (git-version: 24f78d)
 Algorithm started at: 2024-01-21T17:12:18
 Algorithm 'Clip raster by mask layer' starting…
 Input parameters:
-{ 'ALPHA_BAND' : False, 'CROP_TO_CUTLINE' : True, 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : 'D:/r/KenyaDSM/data/kenya_k.tif', 'KEEP_RESOLUTION' : False, 'MASK' : 'D:\\r\\KenyaDSM\\data\\soil_shp\\soil_train_counties.shp', 'MULTITHREADING' : False, 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'TEMPORARY_OUTPUT', 'SET_RESOLUTION' : False, 'SOURCE_CRS' : QgsCoordinateReferenceSystem('EPSG:32737'), 'TARGET_CRS' : QgsCoordinateReferenceSystem('EPSG:32737'), 'TARGET_EXTENT' : None, 'X_RESOLUTION' : None, 'Y_RESOLUTION' : None }
+{ 'ALPHA_BAND' : False, 'CROP_TO_CUTLINE' : True, 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : 'D:/r/KenyaDSM/data/kenya_k.tif', 'KEEP_RESOLUTION' : False, 'MASK' : 'D:\\r\\KenyaDSM\\data\\soil_shp\\soil_train_counties.shp', 'MULTITHREADING' : False, 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'TEMPORARY_OUTPUT', 'SET_RESOLUTION' : False, 'SOURCE_CRS' : QgsCoordinateReferenceSystem('EPSG:4326'), 'TARGET_CRS' : QgsCoordinateReferenceSystem('EPSG:4326'), 'TARGET_EXTENT' : None, 'X_RESOLUTION' : None, 'Y_RESOLUTION' : None }
 
 GDAL command:
 gdalwarp -overwrite -s_srs EPSG:32737 -t_srs EPSG:32737 -of GTiff -cutline D:\r\KenyaDSM\data\soil_shp\soil_train_counties.shp -cl soil_train_counties -crop_to_cutline D:/r/KenyaDSM/data/kenya_k.tif C:/Users/vikir/AppData/Local/Temp/processing_jtBPiZ/ac39a4d39fd34125ad519b71b56644ba/OUTPUT.tif
