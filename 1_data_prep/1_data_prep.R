@@ -76,5 +76,61 @@ write.csv(ken_k_mg_df, "soil_k_mg.csv", row.names=FALSE) # export csv
 library(raster)
 library(terra)
 library(sf)
+library(corrplot)
 setwd(paste(proj_dir,'data/covariates_shp', sep="/"))
+# depth - 15-30 cm, 250m resolution
+covs_path <- getwd()
 
+# create raster stack
+epsg <- "+init=epsg:4326"
+files <- list.files(path = covs_path, pattern = "tif*$", full.names = TRUE)
+covs <- stack(files)
+
+# transform varying rasters in case of varying rasters error
+ph20 <- raster(paste(covs_path, "ph_in_h20_30cm_depth.tif", sep="/"))
+occ <- raster(paste(covs_path, "org_c_con_30cm_depth.tif", sep="/"))
+ph20 <- projectRaster(from = ph20, to = covs$annual_precip, method="ngb")
+occ <- projectRaster(from = occ, to = covs$annual_precip, method="ngb")
+writeRaster(ph20, 'ph_in_h20_30cm_depth.tif', overwrite=TRUE)
+writeRaster(occ, 'org_c_con_30cm_depth.tif', overwrite=TRUE)
+remove(ph20)
+remove(occ)
+
+#retry covariate stacking
+files <- list.files(path = covs_path, pattern = "tif*$", full.names = TRUE)
+covs <- stack(files)
+# confirm selection
+names(covs)
+plot(covs$sand)
+
+# load soil training data for appending: convert to SPDF
+k_dat <- read.csv(paste(proj_dir,'data/soil_shp/k_train/k_train.csv', sep="/"))
+mg_dat <- read.csv(paste(proj_dir,'data/soil_shp/mg_train/mg_train.csv', sep="/"))
+k_dat <- k_dat[, -4]
+mg_dat <- mg_dat[, -4]
+coordinates(k_dat) <- ~ X + Y
+coordinates(mg_dat) <- ~ X + Y
+proj4string(k_dat) <- CRS(epsg)
+proj4string(mg_dat) <- CRS(epsg)
+# confirm that points lie within covariates
+plot(covs$occ)
+points(mg_dat)
+
+#  extract values from covariates
+k_covs <- extract(x = covs, y = k_dat, sp=TRUE)
+mg_covs <- extract(x = covs, y = mg_dat, sp=TRUE)
+summary(k_covs)
+summary(mg_covs)
+
+# do correlation tests
+k_covs <- as.data.frame(k_covs) 
+mg_covs <- as.data.frame(mg_covs) 
+k_covs <- k_covs[complete.cases(k_covs),] # remove nulls
+mg_covs <- mg_covs[complete.cases(mg_covs),]
+
+k_cor <- corrplot(round(cor(k_covs[,3:18]),2),method = "color")
+mg_cor <- corrplot(round(cor(mg_covs[,3:18]),2),method = "color")
+
+# select suitable covariates
+k_cor <- round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)])),2)
+mg_cor <- round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)])),2)
