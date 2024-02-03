@@ -1,0 +1,54 @@
+QGIS version: 3.34.0-Prizren
+QGIS code revision: ffbdd67881
+Qt version: 5.15.3
+Python version: 3.9.5
+GDAL version: 3.7.2
+GEOS version: 3.12.0-CAPI-1.18.0
+PROJ version: Rel. 9.3.0, September 1st, 2023
+PDAL version: 2.5.5 (git-version: 24f78d)
+Algorithm started at: 2024-01-21T17:10:03
+Algorithm 'Clip raster by mask layer' starting…
+Input parameters:
+{ 'ALPHA_BAND' : False, 'CROP_TO_CUTLINE' : True, 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : 'D:/r/KenyaDSM/data/kenya_k.tif', 'KEEP_RESOLUTION' : False, 'MASK' : 'D:\\r\\KenyaDSM\\data\\soil_shp\\soil_test_counties.shp', 'MULTITHREADING' : False, 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'TEMPORARY_OUTPUT', 'SET_RESOLUTION' : False, 'SOURCE_CRS' : QgsCoordinateReferenceSystem('EPSG:4326'), 'TARGET_CRS' : QgsCoordinateReferenceSystem('EPSG:32737'), 'TARGET_EXTENT' : None, 'X_RESOLUTION' : None, 'Y_RESOLUTION' : None }
+
+GDAL command:
+gdalwarp -overwrite -s_srs EPSG:32737 -t_srs EPSG:32737 -of GTiff -cutline D:\r\KenyaDSM\data\soil_shp\soil_test_counties.shp -cl soil_test_counties -crop_to_cutline D:/r/KenyaDSM/data/kenya_k.tif C:/Users/vikir/AppData/Local/Temp/processing_jtBPiZ/a047d12ace004ff395a6c2896a8323c4/OUTPUT.tif
+GDAL command output:
+Creating output file that is 388P x 507L. 
+Processing D:/r/KenyaDSM/data/kenya_k.tif [1/1] : 0Using internal nodata values (e.g. -3.4e+38) for image D:/r/KenyaDSM/data/kenya_k.tif. 
+Copying nodata values from source D:/r/KenyaDSM/data/kenya_k.tif to destination C:/Users/vikir/AppData/Local/Temp/processing_jtBPiZ/a047d12ace004ff395a6c2896a8323c4/OUTPUT.tif. 
+...10...20...30...40...50...60...70...80...90...100 - done.
+Process completed successfully
+Execution completed in 0.25 seconds
+Results:
+{'OUTPUT': 'C:/Users/vikir/AppData/Local/Temp/processing_jtBPiZ/a047d12ace004ff395a6c2896a8323c4/OUTPUT.tif'}
+
+Loading resulting layers
+Algorithm 'Clip raster by mask layer' finished
+QGIS version: 3.34.0-Prizren
+QGIS code revision: ffbdd67881
+Qt version: 5.15.3
+Python version: 3.9.5
+GDAL version: 3.7.2
+GEOS version: 3.12.0-CAPI-1.18.0
+PROJ version: Rel. 9.3.0, September 1st, 2023
+PDAL version: 2.5.5 (git-version: 24f78d)
+Algorithm started at: 2024-01-21T17:11:14
+Algorithm 'Clip raster by mask layer' starting…
+Input parameters:
+{ 'ALPHA_BAND' : False, 'CROP_TO_CUTLINE' : True, 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : 'D:/r/KenyaDSM/data/kenya_mg.tif', 'KEEP_RESOLUTION' : False, 'MASK' : 'D:\\r\\KenyaDSM\\data\\soil_shp\\soil_test_counties.shp', 'MULTITHREADING' : False, 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'TEMPORARY_OUTPUT', 'SET_RESOLUTION' : False, 'SOURCE_CRS' : QgsCoordinateReferenceSystem('EPSG:32737'), 'TARGET_CRS' : QgsCoordinateReferenceSystem('EPSG:32737'), 'TARGET_EXTENT' : None, 'X_RESOLUTION' : None, 'Y_RESOLUTION' : None }
+
+GDAL command:
+gdalwarp -overwrite -s_srs EPSG:32737 -t_srs EPSG:32737 -of GTiff -cutline D:\r\KenyaDSM\data\soil_shp\soil_test_counties.shp -cl soil_test_counties -crop_to_cutline D:/r/KenyaDSM/data/kenya_mg.tif C:/Users/vikir/AppData/Local/Temp/processing_jtBPiZ/dd5a876b86334c828b6ff7b21d8d5eee/OUTPUT.tif
+GDAL command output:
+Creating output file that is 388P x 507L. 
+Processing D:/r/KenyaDSM/data/kenya_mg.tif [1/1] : 0Using internal nodata values (e.g. -3.4e+38) for image D:/r/KenyaDSM/data/kenya_mg.tif. 
+Copying nodata values from source D:/r/KenyaDSM/data/kenya_mg.tif to destination C:/Users/vikir/AppData/Local/Temp/processing_jtBPiZ/dd5a876b86334c828b6ff7b21d8d5eee/OUTPUT.tif. 
+...10...20...30...40...50...60...70...80...90...100 - done.
+Process completed successfully
+Execution completed in 0.56 seconds
+Results:
+{'OUTPUT': 'C:/Users/vikir/AppData/Local/Temp/processing_jtBPiZ/dd5a876b86334c828b6ff7b21d8d5eee/OUTPUT.tif'}
+
+Loading resulting layers
+Algorithm 'Clip raster by mask layer' finished

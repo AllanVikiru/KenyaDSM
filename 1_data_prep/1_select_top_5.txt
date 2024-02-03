@@ -1,0 +1,19 @@
+QGIS version: 3.34.0-Prizren
+QGIS code revision: ffbdd67881
+Qt version: 5.15.3
+Python version: 3.9.5
+GDAL version: 3.7.2
+GEOS version: 3.12.0-CAPI-1.18.0
+PROJ version: Rel. 9.3.0, September 1st, 2023
+PDAL version: 2.5.5 (git-version: 24f78d)
+Algorithm started at: 2024-01-21T16:32:01
+Algorithm 'Extract selected features' starting…
+Input parameters:
+{ 'INPUT' : 'MultiPolygon?crs=EPSG:4326&field=Shape_Leng:double(18,11)&field=Shape_Area:double(18,11)&field=ADM1_EN:string(50,0)&field=ADM1_PCODE:string(50,0)&field=ADM1_REF:string(50,0)&field=ADM1ALT1EN:string(50,0)&field=ADM1ALT2EN:string(50,0)&field=ADM0_EN:string(50,0)&field=ADM0_PCODE:string(50,0)&field=date:date(10,0)&field=validOn:date(10,0)&field=validTo:date(10,0)&field=subcounties_per_county:double(0,0)&uid={3b84a4e6-289f-417e-bf27-645eb0cd2904}', 'OUTPUT' : 'TEMPORARY_OUTPUT' }
+
+Execution completed in 0.12 seconds
+Results:
+{'OUTPUT': 'Selected_features_97616590_a197_4157_b9cf_6f9bb18439b0'}
+
+Loading resulting layers
+Algorithm 'Extract selected features' finished

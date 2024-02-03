@@ -1,0 +1,19 @@
+QGIS version: 3.34.0-Prizren
+QGIS code revision: ffbdd67881
+Qt version: 5.15.3
+Python version: 3.9.5
+GDAL version: 3.7.2
+GEOS version: 3.12.0-CAPI-1.18.0
+PROJ version: Rel. 9.3.0, September 1st, 2023
+PDAL version: 2.5.5 (git-version: 24f78d)
+Algorithm started at: 2024-01-21T17:46:40
+Algorithm 'Raster pixels to points' starting…
+Input parameters:
+{ 'FIELD_NAME' : 'k', 'INPUT_RASTER' : 'D:/r/KenyaDSM/data/k_train.tif', 'OUTPUT' : 'TEMPORARY_OUTPUT', 'RASTER_BAND' : 1 }
+
+Execution completed in 0.44 seconds
+Results:
+{'OUTPUT': 'Vector_points_7dd7965c_e3ea_446c_8881_50ade7f981e2'}
+
+Loading resulting layers
+Algorithm 'Raster pixels to points' finished

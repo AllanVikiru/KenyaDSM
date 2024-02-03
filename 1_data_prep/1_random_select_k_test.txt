@@ -1,0 +1,19 @@
+QGIS version: 3.34.0-Prizren
+QGIS code revision: ffbdd67881
+Qt version: 5.15.3
+Python version: 3.9.5
+GDAL version: 3.7.2
+GEOS version: 3.12.0-CAPI-1.18.0
+PROJ version: Rel. 9.3.0, September 1st, 2023
+PDAL version: 2.5.5 (git-version: 24f78d)
+Algorithm started at: 2024-01-25T05:55:02
+Algorithm 'Random selection within subsets' starting…
+Input parameters:
+{ 'FIELD' : 'k', 'INPUT' : 'E:/r/KenyaDSM/data/soil_shp/k_test_pts.shp|layername=k_test_pts', 'METHOD' : 1, 'NUMBER' : 10 }
+
+Execution completed in 1.61 seconds
+Results:
+{'OUTPUT': 'Vector_points_674a91da_83b3_4b2d_884b_2af23730f5ff'}
+
+Loading resulting layers
+Algorithm 'Random selection within subsets' finished
