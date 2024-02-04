@@ -132,5 +132,12 @@ k_cor <- corrplot(round(cor(k_covs[,3:18]),2),method = "color")
 mg_cor <- corrplot(round(cor(mg_covs[,3:18]),2),method = "color")
 
 # select suitable covariates
-k_cor <- round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)])),2)
-mg_cor <- round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)])),2)
+# set to absolute values to capture both +ve and -ve correlations
+k_cor <- abs(round(cor(x = as.matrix(k_covs[,3]), y = as.matrix(k_covs[,c(4:18)])),2))
+mg_cor <- abs(round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)])),2))
+row.names(k_cor) <- c('corr')
+row.names(mg_cor) <- c('corr')
+k_cor <- as.data.frame(k_cor[,k_cor["corr",] >= 0.3])
+mg_cor <- as.data.frame(mg_cor[,mg_cor["corr",] >= 0.3])
+k_cor <- as.list(row.names(k_cor))
+mg_cor <- as.list(row.names(mg_cor))
