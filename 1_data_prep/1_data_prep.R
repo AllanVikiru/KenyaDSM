@@ -96,7 +96,7 @@ writeRaster(occ, 'org_c_con_30cm_depth.tif', overwrite=TRUE)
 remove(ph20)
 remove(occ)
 
-#retry covariate stacking
+#retry co-variate stacking
 files <- list.files(path = covs_path, pattern = "tif*$", full.names = TRUE)
 covs <- stack(files)
 # confirm selection
@@ -127,7 +127,6 @@ k_covs <- as.data.frame(k_covs)
 mg_covs <- as.data.frame(mg_covs) 
 k_covs <- k_covs[complete.cases(k_covs),] # remove nulls
 mg_covs <- mg_covs[complete.cases(mg_covs),]
-
 k_cor <- corrplot(round(cor(k_covs[,3:18]),2),method = "color")
 mg_cor <- corrplot(round(cor(mg_covs[,3:18]),2),method = "color")
 
@@ -139,5 +138,11 @@ row.names(k_cor) <- c('corr')
 row.names(mg_cor) <- c('corr')
 k_cor <- as.data.frame(k_cor[,k_cor["corr",] >= 0.3])
 mg_cor <- as.data.frame(mg_cor[,mg_cor["corr",] >= 0.3])
-k_cor <- as.list(row.names(k_cor))
-mg_cor <- as.list(row.names(mg_cor))
+
+# create and export training sets with selected covariates
+k_list <- row.names(k_cor) %>% c('X', 'Y', 'k') 
+mg_list <- row.names(mg_cor) %>% c('X', 'Y', 'mg')
+k_train <- subset(k_covs, select=k_list)
+mg_train <- subset(mg_covs, select=mg_list)
+write.csv(k_train, "k_train_cov.csv", row.names=FALSE)
+write.csv(mg_train, "mg_train_cov.csv", row.names=FALSE)
