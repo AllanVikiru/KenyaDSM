@@ -9,7 +9,7 @@ library(readxl)
 library(dplyr)
 
 #import raw data
-setwd(paste(proj_dir,'data', sep="/"))
+setwd(paste(proj_dir,'data/foods', sep="/"))
 raw_foods <- as.data.frame(read_excel("food_composition_tables.xlsx", 4))
 
 # clean data
@@ -77,12 +77,13 @@ library(raster)
 library(terra)
 library(sf)
 library(corrplot)
+library(psych)
 setwd(paste(proj_dir,'data/covariates_shp', sep="/"))
 # depth - 15-30 cm, 250m resolution
 covs_path <- getwd()
 
 # create raster stack
-epsg <- "+init=epsg:4326"
+epsg <- "epsg:4326"
 files <- list.files(path = covs_path, pattern = "tif*$", full.names = TRUE)
 covs <- stack(files)
 
@@ -113,30 +114,33 @@ coordinates(mg_dat) <- ~ X + Y
 proj4string(k_dat) <- CRS(epsg)
 proj4string(mg_dat) <- CRS(epsg)
 # confirm that points lie within covariates
-plot(covs$occ)
+plot(covs$land_cover)
 points(mg_dat)
 
 #  extract values from covariates
 k_covs <- extract(x = covs, y = k_dat, sp=TRUE)
 mg_covs <- extract(x = covs, y = mg_dat, sp=TRUE)
-summary(k_covs)
-summary(mg_covs)
-
-# do correlation tests
 k_covs <- as.data.frame(k_covs) 
 mg_covs <- as.data.frame(mg_covs) 
+summary(k_covs)
+summary(mg_covs)
 k_covs <- k_covs[complete.cases(k_covs),] # remove nulls
 mg_covs <- mg_covs[complete.cases(mg_covs),]
-k_cor <- corrplot(round(cor(k_covs[,3:18]),2),method = "color")
-mg_cor <- corrplot(round(cor(mg_covs[,3:18]),2),method = "color")
 
-# select suitable covariates
-# set to absolute values to capture both +ve and -ve correlations
-k_cor <- abs(round(cor(x = as.matrix(k_covs[,3]), y = as.matrix(k_covs[,c(4:18)])),2))
-mg_cor <- abs(round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)])),2))
+# do correlation tests
+skew(k_covs[3:18], na.rm=TRUE) # check skewness to see variation from normal distribution
+skew(mg_covs[3:18], na.rm=TRUE)
+
+# large variations for most covs so apply spearman to select
+corrplot(cor(k_covs[3:18], method="spearman"), method="color") # do correlation plots
+corrplot(cor(mg_covs[3:18], method="spearman"), method="color")
+
+# as matrix format for selection
+k_cor <- abs(round(cor(x = as.matrix(k_covs[,3]), y = as.matrix(k_covs[,c(4:18)], method="spearman")),2)) # set to absolute values to capture both +ve and -ve correlations
+mg_cor <- abs(round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)], method="spearman")),2))
 row.names(k_cor) <- c('corr')
 row.names(mg_cor) <- c('corr')
-k_cor <- as.data.frame(k_cor[,k_cor["corr",] >= 0.3])
+k_cor <- as.data.frame(k_cor[,k_cor["corr",] >= 0.3]) # select weak to strong correlations: check Mukaka, 2012
 mg_cor <- as.data.frame(mg_cor[,mg_cor["corr",] >= 0.3])
 
 # create and export training sets with selected covariates
