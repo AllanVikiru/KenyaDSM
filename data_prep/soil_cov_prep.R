@@ -23,16 +23,19 @@ occ <- raster(paste(covs_path, "occ.tif", sep="/"))
 # transform varying rasters in case of varying rasters error
 ph20 <- projectRaster(from = ph20, to = covs$annual_precip, method="ngb")
 occ <- projectRaster(from = occ, to = covs$annual_precip, method="ngb")
+
 # replace NA with 0s
-ph20[is.na(ph20[])]<- 0
-occ[is.na(occ[])]<- 0
+cov1 <- raster(paste(covs_path, "wet_index.tif", sep="/"))
+cov2 <- raster(paste(covs_path, "valley_depth.tif", sep="/"))
+cov1[is.na(cov2[])]<- 0
+cov1[is.na(cov2[])]<- 0
 #export cleaned rasters
-plot(ph20)
-summary(occ)
-writeRaster(ph20, 'ph20.tif', overwrite=TRUE)
-writeRaster(occ, 'occ.tif', overwrite=TRUE)
-remove(ph20)
-remove(occ)
+plot(cov1)
+summary(cov2)
+writeRaster(cov1, 'wet_index.tif', overwrite=TRUE)
+writeRaster(cov2, 'valley_depth.tif', overwrite=TRUE)
+remove(cov1)
+remove(cpv2)
 
 #retry co-variate stacking
 files <- list.files(path = covs_path, pattern = "tif*$", full.names = TRUE)
@@ -42,8 +45,8 @@ summary(covs)
 plot(covs$occ)
 
 # load soil training data for appending: convert to SPDF
-k_dat <- read.csv(paste(proj_dir,'data/soil_shp/k_train/k_train.csv', sep="/"))
-mg_dat <- read.csv(paste(proj_dir,'data/soil_shp/mg_train/mg_train.csv', sep="/"))
+k_dat <- read.csv(paste(proj_dir,'data/soil_shp/model/k_model.csv', sep="/"))
+mg_dat <- read.csv(paste(proj_dir,'data/soil_shp/model/mg_model.csv', sep="/"))
 k_dat <- k_dat[, -4]
 mg_dat <- mg_dat[, -4]
 coordinates(k_dat) <- ~ X + Y
@@ -80,15 +83,15 @@ k_cor <- abs(round(cor(x = as.matrix(k_covs[,3]), y = as.matrix(k_covs[,c(4:18)]
 mg_cor <- abs(round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:18)], method="spearman")),2))
 row.names(k_cor) <- c('corr')
 row.names(mg_cor) <- c('corr')
-k_cor <- as.data.frame(k_cor[,k_cor["corr",] >= 0.2]) # select weak to strong correlations: check Mukaka, 2012
-mg_cor <- as.data.frame(mg_cor[,mg_cor["corr",] >= 0.7]) # select strong correlations
+k_cor <- as.data.frame(k_cor[,k_cor["corr",] >= 0.3]) # select weak to strong correlations: check Mukaka, 2012
+mg_cor <- as.data.frame(mg_cor[,mg_cor["corr",] >= 0.3]) # select weak to strong correlations
 
 # create and export training sets with selected covariates
 k_list <- row.names(k_cor) %>% c('X', 'Y', 'k') 
 mg_list <- row.names(mg_cor) %>% c('X', 'Y', 'mg')
-k_train <- subset(k_covs, select=k_list)
-mg_train <- subset(mg_covs, select=mg_list)
+k_dat <- subset(k_covs, select=k_list)
+mg_dat <- subset(mg_covs, select=mg_list)
 
-setwd(paste(proj_dir,'data/soil_shp/', sep="/"))
-write.csv(k_train, "k_train/k_train_cov.csv", row.names=FALSE)
-write.csv(mg_train, "mg_train/mg_train_cov.csv", row.names=FALSE)
+setwd(paste(proj_dir,'data/soil_shp/model', sep="/"))
+write.csv(k_dat, "k_model_cov.csv", row.names=FALSE)
+write.csv(mg_dat, "mg_model_cov.csv", row.names=FALSE)
