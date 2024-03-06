@@ -71,20 +71,21 @@ mg_covs <- mg_covs[complete.cases(mg_covs),]
 
 #export cleaned covs data
 setwd(paste(proj_dir,'data/soil_shp/', sep="/"))
+soil_path <- getwd()
 write.csv(k_covs, "k_pts/sample/k_sample_full_covs.csv", row.names=FALSE)
 write.csv(mg_covs, "mg_pts/sample/mg_sample_full_covs.csv", row.names=FALSE)
 
 # do correlation tests
-skew(k_covs[3:13], na.rm=TRUE) # check skewness to see variation from normal distribution
-skew(mg_covs[3:13], na.rm=TRUE)
+skew(k_covs[3:15], na.rm=TRUE) # check skewness to see variation from normal distribution
+skew(mg_covs[3:15], na.rm=TRUE)
 
 # small variations for most covs so apply pearson to select
-corrplot(cor(k_covs[3:13], method="pearson"), method="color") # do correlation plots
-corrplot(cor(mg_covs[3:13], method="pearson"), method="color")
+corrplot(cor(k_covs[3:15], method="pearson"), method="color") # do correlation plots
+corrplot(cor(mg_covs[3:15], method="pearson"), method="color")
 
 # as matrix format for selection
-k_cor <- abs(round(cor(x = as.matrix(k_covs[,3]), y = as.matrix(k_covs[,c(4:13)], method="spearman")),2)) # set to absolute values to capture both +ve and -ve correlations
-mg_cor <- abs(round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:13)], method="spearman")),2))
+k_cor <- abs(round(cor(x = as.matrix(k_covs[,3]), y = as.matrix(k_covs[,c(4:15)], method="spearman")),2)) # set to absolute values to capture both +ve and -ve correlations
+mg_cor <- abs(round(cor(x = as.matrix(mg_covs[,3]), y = as.matrix(mg_covs[,c(4:15)], method="spearman")),2))
 row.names(k_cor) <- c('corr')
 row.names(mg_cor) <- c('corr')
 k_cor <- as.data.frame(k_cor[,k_cor["corr",] >= 0.3]) # select weak to strong correlations: check Mukaka, 2012
@@ -96,47 +97,38 @@ mg_list <- row.names(mg_cor) %>% c('X', 'Y', 'mg')
 k_dat <- subset(k_covs, select=k_list)
 mg_dat <- subset(mg_covs, select=mg_list)
 
-setwd(paste(proj_dir,'data/soil_shp/', sep="/"))
-write.csv(k_dat, "k_pts/k_subsample_model_cov.csv", row.names=FALSE)
-write.csv(mg_dat, "mg_pts/mg_model_cov.csv", row.names=FALSE)
+write.csv(k_dat, "k_pts/sample/k_sample_model.csv", row.names=FALSE)
+write.csv(mg_dat, "mg_pts/sample/mg_sample_model.csv", row.names=FALSE)
 
-# remove h20_cap for modelling since they are similar 
-# k_dat <- k_dat[, -c(4:5)]
-# mg_dat <- mg_dat[, -c(4:5)]
-# create and export test sets with selected covariates
-# k_test <- read.csv(paste(proj_dir,'data/soil_shp/k_test/k_test.csv', sep="/"))
-# mg_test <- read.csv(paste(proj_dir,'data/soil_shp/mg_test/mg_test.csv', sep="/"))
-# k_test <- k_test[, -4]
-# mg_test <- mg_test[, -4]
-# coordinates(k_test) <- ~ X + Y
-# coordinates(mg_test) <- ~ X + Y
-# proj4string(k_test) <- CRS(epsg)
-# proj4string(mg_test) <- CRS(epsg)
+### RUN FOR SUBSAMPLE ###
+# load soil training data for appending: convert to SPDF
+k_dat <- read.csv(paste(soil_path,'k_pts/subsample/k_subsample.csv', sep="/"))
+mg_dat <- read.csv(paste(soil_path,'mg_pts/subsample/mg_subsample.csv', sep="/"))
+coordinates(k_dat) <- ~ X + Y
+coordinates(mg_dat) <- ~ X + Y
+proj4string(k_dat) <- CRS(epsg)
+proj4string(mg_dat) <- CRS(epsg)
+# confirm that points lie within covariates
+plot(covs$elevation)
+points(k_dat)
 
+#  extract values from covariates
+k_covs <- extract(x = covs, y = k_dat, sp=TRUE)
+mg_covs <- extract(x = covs, y = mg_dat, sp=TRUE)
+k_covs <- as.data.frame(k_covs) 
+mg_covs <- as.data.frame(mg_covs) 
+summary(k_covs)
+summary(mg_covs)
+k_covs <- k_covs[complete.cases(k_covs),] # remove nulls (location skipping)
+mg_covs <- mg_covs[complete.cases(mg_covs),]
 
-# #select covariates and raster stack
-# setwd(paste(proj_dir,'data/covariates_shp/test_cov', sep="/"))
-# # depth - 15-30 cm, 250m resolution
-# covs_path <- getwd()
-# # create raster stack
-# files <- list.files(path = covs_path, pattern = "tif*$", full.names = TRUE)
-# covs <- stack(files)
-# summary(covs)
-# plot(covs$land_elevation)
-# # confirm that points lie within covariates
-# points(mg_test)
-# 
-# #  extract values from covariates
-# k_covs <- extract(x = covs, y = k_test, sp=TRUE)
-# mg_covs <- extract(x = covs, y = mg_test, sp=TRUE)
-# k_covs <- as.data.frame(k_covs) 
-# mg_covs <- as.data.frame(mg_covs) 
-# summary(k_covs)
-# summary(mg_covs)
-# k_covs <- k_covs[complete.cases(k_covs),] # remove nulls
-# mg_covs <- mg_covs[complete.cases(mg_covs),]
-# 
-# #export cleaned covs data
-# setwd(paste(proj_dir,'data/soil_shp/', sep="/"))
-# write.csv(k_dat, "k_test/k_model_cov.csv", row.names=FALSE)
-# write.csv(mg_dat, "mg_test/mg_model_cov.csv", row.names=FALSE)
+#export cleaned covs data
+write.csv(k_covs, "k_pts/subsample/k_subsample_full_covs.csv", row.names=FALSE)
+write.csv(mg_covs, "mg_pts/subsample/mg_subsample_full_covs.csv", row.names=FALSE)
+
+# create and export training sets with selected covariates
+k_dat <- subset(k_covs, select=k_list)
+mg_dat <- subset(mg_covs, select=mg_list)
+
+write.csv(k_dat, "k_pts/subsample/k_subsample_model_cov.csv", row.names=FALSE)
+write.csv(mg_dat, "mg_pts/subsample/mg_subsample_model_cov.csv", row.names=FALSE)
