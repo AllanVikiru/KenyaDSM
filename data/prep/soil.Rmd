@@ -1,0 +1,149 @@
+## Soil Data Prep
+
+### Region of Study
+
+-   Identified region: Kenya Method of selection - number of subcounties per county, criterion: closely related for spatial continuity; related to agriculture. Points should also be sparse for variability to cover large extent
+
+-   [Link to Data Source (Kenya Administrative Boundaries](https://data.humdata.org/dataset/cod-ab-ken))
+
+-   Tool : QGIS
+
+-   Selected shapefiles:
+
+    -   counties - ken_admbnda_adm1_iebc_20191031.shp;
+
+### Soil Data
+
+-   Source: Africa Soil Profiles Database
+
+-   Steps in Preparation
+
+    -   Select only Exchangeable Nutrients from Profiles
+
+    -   Select profiles in KE from Layers and Profiles. Select Layer Num 3 - depth of 15cm.
+
+    -   Remove NULL Lat/Long
+
+    -   Do Join of Layers and Profiles by Profile ID to match location and soil nutrients
+
+    -   Select Counties with most profiles and match criteria for region of study : run points in polygon -
+
+```         
+QGIS version: 3.34.3-Prizren
+QGIS code revision: 47373234ac
+Qt version: 5.15.3
+Python version: 3.9.18
+GDAL version: 3.8.3
+GEOS version: 3.12.1-CAPI-1.18.1
+PROJ version: Rel. 9.3.1, December 1st, 2023
+PDAL version: 2.6.0 (git-version: 3fced5)
+Algorithm started at: 2024-03-18T22:06:33
+Algorithm 'Count points in polygon' starting…
+Input parameters:
+{ 'CLASSFIELD' : '', 'FIELD' : 'num_sp', 'OUTPUT' : 'D:/r/KenyaDSM/data/soil/ke_sp/pts_per_cty.shp', 'POINTS' : 'delimitedtext://file:///D:/r/KenyaDSM/data/soil/ke_sp/ke_sp.csv?type=csv&maxFields=10000&detectTypes=yes&xField=loc_longitude&yField=loc_latitude&crs=EPSG:4326&spatialIndex=no&subsetIndex=no&watchFile=no', 'POLYGONS' : 'D:/r/KenyaDSM/data/ke/ken_admbnda_adm1_iebc_20191031.shp', 'WEIGHT' : '' }
+
+No spatial index exists for points layer, performance will be severely degraded
+Execution completed in 1.21 seconds
+Results:
+{'OUTPUT': 'D:/r/KenyaDSM/data/soil/ke_sp/pts_per_cty.shp'}
+
+Loading resulting layers
+Algorithm 'Count points in polygon' finished
+```
+
+-   Selected counties: Embu and Tharaka Nithi
+
+Run Extract by location from Soil Profiles
+
+```         
+QGIS version: 3.34.3-Prizren
+QGIS code revision: 47373234ac
+Qt version: 5.15.3
+Python version: 3.9.18
+GDAL version: 3.8.3
+GEOS version: 3.12.1-CAPI-1.18.1
+PROJ version: Rel. 9.3.1, December 1st, 2023
+PDAL version: 2.6.0 (git-version: 3fced5)
+Algorithm started at: 2024-03-18T22:26:14
+Algorithm 'Extract by location' starting…
+Input parameters:
+{ 'INPUT' : 'delimitedtext://file:///D:/r/KenyaDSM/data/soil/ke_sp/ke_sp.csv?type=csv&maxFields=10000&detectTypes=yes&xField=loc_longitude&yField=loc_latitude&crs=EPSG:4326&spatialIndex=no&subsetIndex=no&watchFile=no', 'INTERSECT' : 'D:\\r\\KenyaDSM\\data\\soil\\ke_sp\\soil_counties.shp', 'OUTPUT' : 'D:/r/KenyaDSM/data/soil/ke_sp/sample_sp.shp', 'PREDICATE' : [0,6] }
+
+No spatial index exists for input layer, performance will be severely degraded
+Execution completed in 0.50 seconds
+Results:
+{'OUTPUT': 'D:/r/KenyaDSM/data/soil/ke_sp/sample_sp.shp'}
+
+Loading resulting layers
+Algorithm 'Extract by location' finished
+```
+
+-   Retain ExK and ExMg in soil profiles
+
+#### Covs (GSOC Technical Report/ [FAQ SoilGrids 2017 \| ISRIC](https://www.isric.org/explore/soilgrids/faq-soilgrids-2017))
+
+| Property | Code    | Name                            |
+|----------|---------|---------------------------------|
+| Climate  | B07CHE3 | Temp Annual Range               |
+| Organism | BARL10  | Bareground                      |
+| Relief   | DEMENV5 | Land surface elevation          |
+| Organism | MAXENV3 | EVI - enhanced vegetation index |
+| Climate  | PRSCHE3 | Total annual precipitation      |
+| Relief   | SLPMRG5 | Terrain slope                   |
+| Relief   | TPIMRG5 | topographic position index      |
+| Organism | TREL10  | tree cover                      |
+| Climate  | TWIMRG5 | SAGA Wetness Index              |
+| Relief   | VDPMRG5 | valley depth                    |
+| Climate  | B13CHE3 | ppt of wettest month            |
+| Climate  | B14CHE3 | ppt of driest month             |
+| Relief   | EXTGSW7 | surface water extent            |
+| Climate  | B04CHE3 | Temperature Seasonality         |
+
+-   Clip by extent
+
+```         
+QGIS version: 3.34.3-Prizren
+QGIS code revision: 47373234ac
+Qt version: 5.15.3
+Python version: 3.9.18
+GDAL version: 3.8.3
+GEOS version: 3.12.1-CAPI-1.18.1
+PROJ version: Rel. 9.3.1, December 1st, 2023
+PDAL version: 2.6.0 (git-version: 3fced5)
+Algorithm started at: 2024-03-18T23:49:39
+Algorithm 'Clip raster by extent' starting…
+Input parameters:
+{ 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : 'D:/r/KenyaDSM/data/covs/full/B14CHE3.tif', 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'D:/r/KenyaDSM/data/covs/local/driest_ppt.tif', 'OVERCRS' : False, 'PROJWIN' : '37.266925812,38.309360504,-0.916017056,0.068584019 [EPSG:4326]' }
+
+GDAL command:
+gdal_translate -projwin 37.266925812 0.068584019 38.309360504 -0.916017056 -of GTiff D:/r/KenyaDSM/data/covs/full/B14CHE3.tif D:/r/KenyaDSM/data/covs/local/driest_ppt.tif
+GDAL command output:
+Input file size is 960, 1121 
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Process completed successfully
+Execution completed in 0.16 seconds
+Results:
+{'OUTPUT': 'D:/r/KenyaDSM/data/covs/local/driest_ppt.tif'}
+
+Loading resulting layers
+Algorithm 'Clip raster by extent' finished
+```
+
+- Extract extent from covs to add more soil points and enhance prediction
+
+```{r}
+proj_dir <- 'D:/r/KenyaDSM'
+epsg <- "epsg:4326"
+
+# covariate preparation and selection
+library(raster)
+library(terra)
+library(sf)
+library(corrplot)
+library(psych)
+setwd(paste(proj_dir,'data/soil', sep="/"))
+covs_path <- getwd()
+dat <- read.csv(paste(proj_dir,'data/soil/ke_afsp_nutrientprofiles.csv', sep="/"))
+coordinates(dat) <- ~ X + Y
+proj4string(dat) <- CRS(epsg)
+```

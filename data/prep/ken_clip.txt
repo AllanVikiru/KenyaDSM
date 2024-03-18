@@ -1,0 +1,62 @@
+QGIS version: 3.34.3-Prizren
+QGIS code revision: 47373234ac
+Qt version: 5.15.3
+Python version: 3.9.18
+GDAL version: 3.8.3
+GEOS version: 3.12.1-CAPI-1.18.1
+PROJ version: Rel. 9.3.1, December 1st, 2023
+PDAL version: 2.6.0 (git-version: 3fced5)
+Algorithm started at: 2024-03-16T17:58:29
+Algorithm 'Clip raster by extent' starting?
+Input parameters:
+{ 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : '/vsicurl/https://files.isric.org/public/af250m_nutrient/af250m_nutrient_mg_m_agg30cm.tif', 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'D:/r/KenyaDSM/data/soil/mg/ken_mg.tif', 'OVERCRS' : False, 'PROJWIN' : '33.910288655,41.906021459,-4.676879883,5.414123535 [EPSG:4326]' }
+
+GDAL command:
+gdal_translate -projwin 33.910288655 5.414123535 41.906021459 -4.676879883 -of GTiff /vsicurl/https://files.isric.org/public/af250m_nutrient/af250m_nutrient_mg_m_agg30cm.tif D:/r/KenyaDSM/data/soil/mg/ken_mg.tif
+GDAL command output:
+Input file size is 40874, 30522 
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Process completed successfully
+Execution completed in 173.63 seconds (2 minutes 54 seconds)
+Results:
+{'OUTPUT': 'D:/r/KenyaDSM/data/soil/mg/ken_mg.tif'}
+
+Loading resulting layers
+Algorithm 'Clip raster by extent' finished
+QGIS version: 3.34.3-Prizren
+QGIS code revision: 47373234ac
+Qt version: 5.15.3
+Python version: 3.9.18
+GDAL version: 3.8.3
+GEOS version: 3.12.1-CAPI-1.18.1
+PROJ version: Rel. 9.3.1, December 1st, 2023
+PDAL version: 2.6.0 (git-version: 3fced5)
+Algorithm started at: 2024-03-16T18:06:24
+Algorithm 'Clip raster by extent' starting?
+Input parameters:
+{ 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : '/vsicurl/https://files.isric.org/public/af250m_nutrient/af250m_nutrient_k_m_agg30cm.tif', 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'D:/r/KenyaDSM/data/soil/k/ken_k.tif', 'OVERCRS' : False, 'PROJWIN' : '33.910288655,41.906021459,-4.676879883,5.414123535 [EPSG:4326]' }
+
+GDAL command:
+gdal_translate -projwin 33.910288655 5.414123535 41.906021459 -4.676879883 -of GTiff /vsicurl/https://files.isric.org/public/af250m_nutrient/af250m_nutrient_k_m_agg30cm.tif D:/r/KenyaDSM/data/soil/k/ken_k.tif
+GDAL command output:
+Input file size is 40874, 30522 
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Process completed successfully
+Execution completed in 193.91 seconds (3 minutes 14 seconds)
+Results:
+{'OUTPUT': 'D:/r/KenyaDSM/data/soil/k/ken_k.tif'}
+
+Loading resulting layers
+Algorithm 'Clip raster by extent' finished
+QGIS version: 3.34.3-Prizren
+QGIS code revision: 47373234ac
+Qt version: 5.15.3
+Python version: 3.9.18
+GDAL version: 3.8.3
+GEOS version: 3.12.1-CAPI-1.18.1
+PROJ version: Rel. 9.3.1, December 1st, 2023
+PDAL version: 2.6.0 (git-version: 3fced5)
+Algorithm started at: 2024-03-16T18:21:13
+Algorithm 'Clip raster by extent' starting?
+Input parameters:
+{ 'DATA_TYPE' : 0, 'EXTRA' : '', 'INPUT' : 'D:/r/KenyaDSM/data/soil/k/ken_k.tif', 'NODATA' : None, 'OPTIONS' : '', 'OUTPUT' : 'D:/r/KenyaDSM/data/soil/counties/250m/soil_k.tif', 'OVERCRS' : False, 'PROJWIN' : '34.343409235,35.155378964,0.091259924,1.150184714 [EPSG:4326]' }

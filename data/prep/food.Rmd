@@ -1,0 +1,77 @@
+## Food Data Prep
+
+### Set project directory, select food data and import
+
+```{r, setup, include=FALSE}
+proj_dir <- 'D:/r/KenyaDSM'
+knitr::opts_knit$set(root.dir = paste(proj_dir,'data/foods', sep="/"))
+# install.packages('tidyverse', 'fs', 'readxl')
+```
+
+```{r echo=TRUE}
+library(tidyverse)
+library(fs)
+library(readxl)
+library(dplyr)
+raw_foods <- as.data.frame(read_excel("food_composition_tables.xlsx", 4))
+raw_foods
+```
+
+### Clean data
+
+#### 1. Select vegetables and nutrients
+
+```{r}
+raw_foods <- raw_foods[307:470, c(2, 12,14,16,17)]
+colnames(raw_foods) <- c('Vegetable', 'Calcium', 'Magnesium', 'Potassium', 'Sodium')
+raw_foods
+```
+
+#### 2. Check and remove nulls
+
+```{r}
+print(is.null(raw_foods))
+raw_foods <- raw_foods[!(is.na(raw_foods$Vegetable) | raw_foods$Vegetable==""), ]
+raw_foods
+```
+
+#### 3. Check and remove duplicate veg
+
+```{r}
+print(duplicated(raw_foods$Vegetable))
+raw_foods <- raw_foods[!duplicated(raw_foods$Vegetable), ] # remove duplicate foods
+raw_foods
+```
+
+#### 4. Check data types & convert nutrients to floats/ints
+
+```{r}
+str(raw_foods)
+raw_foods <- raw_foods %>% mutate_at(c('Calcium', 'Magnesium', 'Potassium', 'Sodium'), as.numeric)
+str(raw_foods)
+```
+
+### EDA
+
+```{r}
+summary(raw_foods)
+```
+
+```{r}
+boxplot(raw_foods[,2:5])
+```
+
+Select **K** cause of uniform distribution, reject sodium; compare Mg and Ca since they are similar
+
+```{r}
+hist(raw_foods$Magnesium)
+hist(raw_foods$Calcium)
+```
+
+select **Magnesium** for slightly more varied distribution between Mg and Ca
+
+#### Export veg, potassium and magnesium data
+
+```{r}
+write.csv(raw_foods[,c(1,3,4)], "veg_k_mg.csv", row.names=FALSE)
+```
