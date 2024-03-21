@@ -1,18 +1,18 @@
 ## Food Data Prep
 
-### Set project directory, select food data and import
-
-```{r, setup, include=FALSE}
-proj_dir <- 'D:/r/KenyaDSM'
-knitr::opts_knit$set(root.dir = paste(proj_dir,'data/foods', sep="/"))
-# install.packages('tidyverse', 'fs', 'readxl')
+### install packages 
+```{r}
+install.packages('tidyverse', 'fs', 'readxl')
 ```
+
+### Set project directory, select food data and import
 
 ```{r echo=TRUE}
 library(tidyverse)
 library(fs)
 library(readxl)
 library(dplyr)
+proj_dir <- 'D:/r/KenyaDSM/data/foods'
 raw_foods <- as.data.frame(read_excel("food_composition_tables.xlsx", 4))
 raw_foods
 ```

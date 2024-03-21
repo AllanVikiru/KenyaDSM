@@ -129,10 +129,43 @@ Loading resulting layers
 Algorithm 'Clip raster by extent' finished
 ```
 
-- Extract extent from covs to add more soil points and enhance prediction
+-   Extract extent from covs to add more soil points and enhance prediction
+
+```         
+QGIS version: 3.34.3-Prizren
+QGIS code revision: 47373234ac
+Qt version: 5.15.3
+Python version: 3.9.18
+GDAL version: 3.8.3
+GEOS version: 3.12.1-CAPI-1.18.1
+PROJ version: Rel. 9.3.1, December 1st, 2023
+PDAL version: 2.6.0 (git-version: 3fced5)
+Algorithm started at: 2024-03-19T10:12:20
+Algorithm 'Extract layer extent' starting…
+Input parameters:
+{ 'INPUT' : 'D:/r/KenyaDSM/data/covs/local/annual_ppt.tif', 'OUTPUT' : 'D:/r/KenyaDSM/data/soil/ke_sp/sregion.shp', 'ROUND_TO' : 0 }
+
+Execution completed in 0.77 seconds
+Results:
+{'OUTPUT': 'D:/r/KenyaDSM/data/soil/ke_sp/soil_region.shp'}
+
+Loading resulting layers
+Algorithm 'Extract layer extent' finished
+
+- Drop columns with longitude, latitude in profile; export as CSV with X,Y
+```
+
+#### Covariate prep and selection
+
+##### install packages
 
 ```{r}
-proj_dir <- 'D:/r/KenyaDSM'
+install.packages('raster', 'terra', 'sf', 'psych', 'expss')
+```
+
+```{r}
+# set directory and epsg
+proj_dir <- 'D:/r/KenyaDSM/data'
 epsg <- "epsg:4326"
 
 # covariate preparation and selection
@@ -141,9 +174,124 @@ library(terra)
 library(sf)
 library(corrplot)
 library(psych)
-setwd(paste(proj_dir,'data/soil', sep="/"))
-covs_path <- getwd()
-dat <- read.csv(paste(proj_dir,'data/soil/ke_afsp_nutrientprofiles.csv', sep="/"))
-coordinates(dat) <- ~ X + Y
-proj4string(dat) <- CRS(epsg)
+library(expss)
+covs_path <- paste(proj_dir,'covs/local', sep="/")
+```
+
+##### create raster stack
+
+```{r}
+files <- list.files(path = covs_path, pattern = "tif*$", full.names = TRUE)
+covs <- stack(files)
+summary(covs) # it is normal to have NoData rasters check Fan et al. use location skipping
+```
+
+##### load soil data
+
+```{r}
+sp_path <-  paste(proj_dir,'soil/ke_sp', sep="/")
+sp_dat <- read.csv(paste(sp_path,'sample/region_sp.csv', sep="/"))
+coordinates(sp_dat) <- ~ X + Y
+proj4string(sp_dat) <- CRS(epsg)
+
+# confirm that points lie within covariates
+{
+  plot(covs$sfc_water_extent)
+  points(sp_dat)
+}
+```
+
+##### extract points from covs
+
+```{r}
+sp_covs <- as.data.frame(extract(x = covs, y = sp_dat, sp=TRUE))
+summary(sp_covs)
+```
+
+#### ESDA
+
+-   9999.99s and 0s detected in nutrients (NAs) clean by impute by mean (Baker et al.)
+
+```{r}
+sp_covs$ExMg <- na_if(sp_covs$ExMg, -9999.00) # replace -9999 with na
+sp_covs$ExK <- na_if(sp_covs$ExK, -9999.00)
+sp_covs$ExMg <- na_if(sp_covs$ExMg, 0.00) # replace 0 with na
+sp_covs$ExK <- na_if(sp_covs$ExK, 0.00)
+# replace per column
+sp_covs$ExK[is.na(sp_covs$ExK)] <- mean(sp_covs$ExK, na.rm = T)
+sp_covs$ExMg[is.na(sp_covs$ExMg)] <- mean(sp_covs$ExMg, na.rm = T)
+summary(sp_covs$ExMg)
+summary(sp_covs$ExK)
+```
+-   drop null columns and rows (location skipping)
+```{r}
+sp_covs <- subset(sp_covs, select = -c(sfc_water_extent)) 
+sp_covs <- sp_covs[complete.cases(sp_covs),]
+summary(sp_covs)
+```
+
+-   split k and mg each with covs and export
+
+```{r}
+k_covs <- sp_covs[-c(4)]
+mg_covs <- sp_covs[-c(5)]
+write.csv(sp_covs, paste(sp_path,'covs/sp_fullcovs.csv', sep="/"), row.names=FALSE)
+write.csv(k_covs, paste(sp_path,'covs/k_fullcovs.csv', sep="/"), row.names=FALSE)
+write.csv(mg_covs, paste(sp_path,'covs/mg_fullcovs.csv', sep="/"), row.names=FALSE)
+```
+
+##### distribution tests of nutrients
+
+```{r}
+hist(k_covs$ExK)
+hist(mg_covs$ExMg)
+```
+
+-   implies soil has trace amounts of exchangable K compared to exchangable Mg
+
+##### do correlation tests
+
+###### skewness tests to see variation from normal distribution
+
+```{r}
+skew(k_covs[4:17], na.rm=TRUE)
+skew(mg_covs[4:17], na.rm=TRUE)
+```
+
+-   small variations for most covs so apply pearson to select
+
+```{r}
+corrplot(cor(k_covs[4:17], method="pearson"), method="color") # do correlation plots
+corrplot(cor(mg_covs[4:17], method="pearson"), method="color")
+```
+
+-   as matrix format for selection
+
+```{r}
+# set to absolute values to capture both +ve and -ve correlations
+k_cor <- abs(round(cor(x = as.matrix(k_covs[,4]), y = as.matrix(k_covs[,c(5:17)], method="pearson")),2)) 
+mg_cor <- abs(round(cor(x = as.matrix(mg_covs[,4]), y = as.matrix(mg_covs[,c(5:17)], method="pearson")),2))
+row.names(k_cor) <- c('k_corr')
+row.names(mg_cor) <- c('mg_corr')
+k_cor
+mg_cor
+```
+-   select weak to strong correlations: check Mukaka, 2012
+
+```{r}
+k_cor <- as.data.frame(k_cor[,k_cor["k_corr",] >= 0.15]) # avoid too weak
+mg_cor <- as.data.frame(mg_cor[,mg_cor["mg_corr",] >= 0.2])
+k_cor
+mg_cor
+```
+
+#### create and export modelling sets with selected covariates
+
+```{r}
+k_list <- row.names(k_cor) %>% c('X', 'Y', 'ExK') 
+mg_list <- row.names(mg_cor) %>% c('X', 'Y', 'ExMg')
+k_dat <- subset(k_covs, select=k_list)
+mg_dat <- subset(mg_covs, select=mg_list)
+write.csv(k_dat, paste(sp_path,"sample/k_model.csv",sep="/"), row.names=FALSE)
+write.csv(mg_dat, paste(sp_path,"sample/mg_model.csv",sep="/"),row.names=FALSE)
 ```

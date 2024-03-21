@@ -1,0 +1,236 @@
+## Exchangable Potassium Map Modelling and Testing
+
+-   selected mods: MLR, OK, MLRK, SVM
+
+### Data Preparation
+
+#### set project directory and projections
+
+```{r, echo=FALSE}
+proj_dir <- 'D:/r/KenyaDSM'
+wsg84 <- "+init=epsg:4326"
+utm <- "+init=epsg:32236"
+library(caret)
+library(raster)
+library(e1071)
+library(sp)
+library(RColorBrewer)
+library(gstat)
+library(automap)
+```
+
+#### select potassium data and training covariates
+
+```{r}
+soil_path <- paste(proj_dir,'data/soil/ke_sp/sample', sep="/")
+k_dat <- as.data.frame(read.csv(paste(soil_path, "k_model.csv", sep = "/"), header = TRUE, sep = ","))
+covs_path <- paste(proj_dir,'data/covs/local/', sep="/")
+k_covs <-  names(k_dat[1:9])
+k_files <- paste0(covs_path,"/",k_covs, ".tif")
+k_covs <- stack(k_files)
+summary(k_covs)
+plot(k_covs$land_elevation)
+```
+
+#### log transformation
+
+```{r}
+hist(k_dat$ExK) # right skewed
+hist(log(k_dat$ExK)) #log transformation of targets for normal distribution
+k_dat$log_ExK <- log(k_dat$ExK)
+```
+
+#### split into 80:20 training/testing
+
+```{r}
+part <- createDataPartition(k_dat$log_ExK, times = 1, p = 0.75, list = FALSE)
+k_train <- k_dat[part, ]
+k_test <- k_dat[-part, ]
+head(k_train)
+head(k_test)
+```
+
+#### set equations
+
+```{r}
+k_regeqn <- as.formula(log_ExK ~ annual_ppt+bareground+land_elevation+treecover+valley_depth+veg_index+wetness_index+wettest_ppt)
+k_okeqn <- as.formula(log_ExK ~ 1)
+```
+
+### MLR Modelling
+
+#### run model
+
+```{r}
+k_mlr <- train(k_regeqn, data = k_train, method= "lm")
+k_mlr # RMSE - 1.21
+```
+
+### SVM Regression
+
+#### run initial model
+
+```{r}
+k_svm <- train(k_regeqn, data = k_train, method = 'svmRadial')
+k_svm # RMSE - 1.21
+```
+
+#### tune hyperparams
+
+```{r}
+svm_tune <- tune(svm, 
+                 k_regeqn, 
+                 data = k_train[,c("log_ExK",names(k_covs))],
+                 ranges = list(
+                   gamma = seq(0.2,0.5,0.05),
+                   cost = seq(0.1,1,0.1)))
+plot(svm_tune) # towards 0.5 gamma, 0.3 cost
+svm_tune$best.parameters
+```
+
+#### remodel with best params
+
+```{r}
+hp <- expand.grid(C = svm_tune$best.parameters$cost,sigma = svm_tune$best.parameters$gamma)
+k_svm <- train(k_regeqn, data = k_train, method = 'svmRadial', tuneGrid = hp)
+k_svm # RMSE - 1.25
+```
+
+#### generate MLR and SVM maps
+
+```{r}
+k_mlrpred <- exp(predict(k_covs, k_mlr))# MLR
+k_svmpred <- exp(predict(k_covs, k_svm))# SVM
+```
+
+### OK
+
+#### convert to spatial format for kriging: change projection to UTM
+
+```{r}
+coordinates(k_train) <- ~ X + Y
+k_train@proj4string <- CRS(wsg84)
+k_train <- spTransform(k_train, CRS(utm))
+k_covs <- projectRaster(k_covs, crs = CRS(utm))
+k_covs <- as(k_covs, "SpatialGridDataFrame")
+k_train <- k_train[which(!duplicated(k_train@coords)),] #remove any duplicates
+```
+
+#### run autokrige
+
+```{r}
+k_ok <- autoKrige(k_okeqn, 
+                  input_data = k_train, 
+                  verbose = TRUE)
+plot(k_ok)
+```
+
+### MLRK
+
+#### run autokrige
+
+```{r}
+k_mlrk <- autoKrige(k_regeqn, 
+                  input_data = k_train, 
+                  new_data = k_covs,
+                  verbose = TRUE)
+plot(k_mlrk)
+```
+
+### Generate kriging predicted maps
+
+```{r}
+k_okpred <- exp(raster(k_ok$krige_output[1])) #OK
+k_mlrkpred <- exp(raster(k_mlrk$krige_output[1])) #MLRK
+
+# convert projection to WGS84
+k_mlrpred <- projectRaster(k_mlrpred, crs = wsg84)
+k_svmpred <- projectRaster(k_svmpred, crs = wsg84)
+k_okpred <- projectRaster(k_okpred, crs = wsg84)
+k_mlrkpred <- projectRaster(k_mlrkpred, crs = wsg84)
+
+{
+  plot(k_mlrpred)
+  title("Prediction by MLR")
+}
+{
+  plot(k_svmpred)
+  title("Prediction by SVM")
+}
+{
+  plot(k_okpred)
+  title("Prediction by OK")
+}
+{
+  plot(k_mlrkpred)
+  title("Prediction by MLRK")
+}
+```
+
+#### export models
+
+```{r}
+model_path <- paste(proj_dir,"maps/models", sep="/")
+saveRDS(k_mlr, file = paste(model_path, "k_mlr.Rds", sep="/"))
+saveRDS(k_svm, file = paste(model_path, "k_svm.Rds", sep="/"))
+saveRDS(k_ok, file = paste(model_path, "k_ok.Rds", sep="/"))
+saveRDS(k_mlrk, file = paste(model_path, "k_mlrk.Rds", sep="/"))
+```
+
+#### export generated maps
+
+```{r, echo=FALSE}
+model_path <- paste(proj_dir,"data/soil/models", sep="/")
+setwd(model_path)
+writeRaster(k_mlrpred, filename = "kmlr_pred.tif", overwrite=T)
+writeRaster(k_svmpred, filename = "ksvm_pred.tif", overwrite=T)
+writeRaster(k_okpred, filename = "kok_pred.tif", overwrite=T)
+writeRaster(k_mlrkpred, filename = "kmlrk_pred.tif", overwrite=T)
+```
+
+## Model Testing
+
+### select test data and convert to sp; select model rasters
+
+```{r}
+coordinates(k_test) <- ~ X + Y
+k_test@proj4string <- CRS(wsg84)
+
+k_svmpred <- raster(paste(model_path,"ksvm_pred.tif", sep = "/"))
+k_mlrpred <- raster(paste(model_path,"kmlr_pred.tif", sep = "/" ))
+k_okpred <- raster(paste(model_path,"kok_pred.tif", sep = "/"))
+k_mlrkpred <- raster(paste(model_path,"kmlrk_pred.tif", sep = "/"))
+```
+
+### extract predicted values from rasters
+
+```{r}
+k_test <- extract(x = k_svmpred, y = k_test, sp = TRUE)
+k_test <- extract(x = k_mlrpred, y = k_test, sp = TRUE)
+k_test <- extract(x = k_okpred, y = k_test, sp = TRUE)
+k_test <- extract(x = k_mlrkpred, y = k_test, sp = TRUE)
+```
+
+### calculate predicted errors
+
+```{r}
+k_test$PE_svm <- k_test$ksvm_pred - k_test$ExK
+k_test$PE_mlr <- k_test$kmlr_pred - k_test$ExK
+k_test$PE_ok <- k_test$kok_pred - k_test$ExK
+k_test$PE_mlrk <- k_test$kmlrk_pred - k_test$ExK
+summary(k_test)
+```
+
+### calculate RMSE
+
+```{r}
+RMSE_svm <- round(sqrt(sum(k_test$PE_svm^2, na.rm=TRUE) / length(k_test$PE_svm)),2)
+RMSE_mlr <- round(sqrt(sum(k_test$PE_mlr^2, na.rm=TRUE) / length(k_test$PE_mlr)),2)
+RMSE_ok <- round(sqrt(sum(k_test$PE_ok^2, na.rm=TRUE) / length(k_test$PE_ok)), 2)
+RMSE_mlrk <- round(sqrt(sum(k_test$PE_mlrk^2, na.rm=TRUE) / length(k_test$PE_mlrk)),2)
+
+paste0("svm: ", RMSE_svm)
+paste0("mlr: ", RMSE_mlr)
+paste0("mlrk: ", RMSE_mlrk)
+paste0("ok: ", RMSE_ok)
+```
