@@ -42,9 +42,9 @@ mg_dat$log_ExMg <- log(mg_dat$ExMg)
 #### split into 80:20 training/testing
 
 ```{r}
-part <- createDataPartition(mg_dat$log_ExMg, times = 1, p = 0.75, list = FALSE)
-mg_train <- mg_dat[part, ]
-mg_test <- mg_dat[-part, ]
+part <- createDataPartition(mg_dat$log_ExMg, times = 1, p = 0.2, list = FALSE)
+mg_test <- mg_dat[part, ]
+mg_train <- mg_dat[-part, ]
 head(mg_train)
 head(mg_test)
 ```
@@ -61,7 +61,7 @@ mg_okeqn <- as.formula(log_ExMg ~ 1)
 #### run model
 ```{r}
 mg_mlr <- train(mg_regeqn, data = mg_train, method= "lm")
-mg_mlr # RMSE - 1.07
+mg_mlr
 ```
 
 ### SVM Regression

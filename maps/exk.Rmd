@@ -43,9 +43,9 @@ k_dat$log_ExK <- log(k_dat$ExK)
 #### split into 80:20 training/testing
 
 ```{r}
-part <- createDataPartition(k_dat$log_ExK, times = 1, p = 0.75, list = FALSE)
-k_train <- k_dat[part, ]
-k_test <- k_dat[-part, ]
+part <- createDataPartition(k_dat$log_ExK, times = 1, p = 0.2, list = FALSE)
+k_test <- k_dat[part, ]
+k_train <- k_dat[-part, ]
 head(k_train)
 head(k_test)
 ```
@@ -63,7 +63,7 @@ k_okeqn <- as.formula(log_ExK ~ 1)
 
 ```{r}
 k_mlr <- train(k_regeqn, data = k_train, method= "lm")
-k_mlr # RMSE - 1.21
+k_mlr
 ```
 
 ### SVM Regression
@@ -93,7 +93,7 @@ svm_tune$best.parameters
 ```{r}
 hp <- expand.grid(C = svm_tune$best.parameters$cost,sigma = svm_tune$best.parameters$gamma)
 k_svm <- train(k_regeqn, data = k_train, method = 'svmRadial', tuneGrid = hp)
-k_svm # RMSE - 1.25
+k_svm
 ```
 
 #### generate MLR and SVM maps
