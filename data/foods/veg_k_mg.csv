@@ -1,99 +1,97 @@
-"Vegetable","Magnesium","Potassium"
-"Amaranth, leaves, picked, raw",122,597
-"Amaranth, leaves, picked, boiled, drained (without salt)",77,314
-"Amaranth, leaves, picked, stewed (without salt)",151,737
-"Bitter gourd, whole, different varieties, raw",20,210
-"Bitter gourd, whole, different varieties, boiled, drained (without salt)",13,117
-"Black (African) nightshade, indigenous, leaves, picked, raw",41,421
-"Black (African) nightshade, indigenous, leaves, picked, boiled, drained (without salt)",24,200
-"Broccoli, tops and stems, raw",21,336
-"Black (African) nightshade, indigenous, leaves, picked, steamed",32.2826086956522,311.173913043478
-"Broccoli, tops and stems, boiled, drained (without salt)",11,151
-"Broccoli, tops and stems, steamed (without salt)",18,275
-"Cabbage, leaf head, Chinese, raw",10,250
-"Cabbage, leaf head, Chinese, boiled, drained (without salt)",6,128
-"Cabbage, leaf head, Chinese, steamed (without salt)",9,217
-"Cabbage, leaf head, red raw",29,241
-"Cabbage, leaf head, red, boiled, drained (without salt)",18,123
-"Cabbage, leaf head, red, stewed (without salt)",27,223
-"Cabbage, leaf head, white, raw",9,313
-"Cabbage, leaf head, white, boiled, drained (without salt)",6,159
-"Cabbage, leaf head, white, stewed (without salt)",10,336
-"Capsicum (sweet peper), green, raw",10,151
-"Capsicum (sweet peper), green, boiled, drained (without salt)",7,87
-"Capsicum (sweet peper), green, grilled (without salt and fat)",11,162
-"Capsicum (sweet peper), green, baked (without salt)",10,157
-"Capsicum (sweet peper), red, raw",6,174
-"Capsicum (sweet peper), red, boiled, drained (without salt)",4,100
-"Capsicum (sweet peper), red, grilled (without salt and fat)",6,187
-"Capsicum (sweet peper), red, baked (without salt)",6,181
-"Capsicum (sweet peper), yellow, raw",17,242
-"Capsicum (sweet peper), yellow, boiled, drained (without salt)",12,139
-"Capsicum (sweet peper), yellow, grilled (without salt and fat)",19,260
-"Capsicum (sweet peper), yellow, baked (without salt)",18,252
-"Carrot, peeled, raw",17,251
-"Carrot, peeled, boiled, drained (without salt)",11,120
-"Carrot, peeled, stewed (without salt)",17,261
-"Cauliflower, tops and stems, raw",11,292
-"Cauliflower, tops and stems, boiled, drained (without salt)",6,146
-"Celery, stalk, raw",19,267
-"Celery, stalk, boiled, drained (without salt)",13,148
-"Courgette, green, unpeeled, raw",16,188
-"Courgette, green, unpeeled, boiled, drained (without salt)",11,104
-"Cowpea, leaves, picked, raw",47,485
-"Cowpea, leaves, picked, boiled, drained (without salt)",27,231
-"Cowpea, leaves, picked, steamed (without salt)",37,358
-"Cucumber, green, unpeeled, raw",14,136
-"Eggplant / Brinjal, different varieties, whole edible, raw",21,200
-"Eggplant / Brinjal, different varieties, whole edible, boiled, drained (without salt)",14,108
-"Eggplant / Brinjal, different varieties, whole edible, stewed (without salt)",26,250
-"Jute mallow, picked leaves, raw",30,283
-"Jute mallow, picked leaves, boiled, drained (without salt)",19,149
-"Jute mallow, picked leaves, stewed (without salt)",37,349
-"Kale, Ethiopian (kanzera), leaves, raw",54,639
-"Kale, Ethiopian (kanzera), leaves, boiled, drained (without salt)",31,304
-"Kale, Ethiopian (kanzera), leaves, steamed (without salt)",42,472
-"Kale (sukuma wiki) raw",41,238
-"Kale (sukuma wiki), boiled, drained (without salt)",23,113
-"Kale (sukuma wiki), steamed (without salt)",32,176
-"Leeks, bulb and stem, raw",14,202
-"Leeks, bulb and stem, boiled, drained (without salt)",10,110
-"Lettuce, not further defined, raw",24,201
-"Mushroom, fresh, raw",15,318
-"Mushroom, fresh, boiled, drained (without salt)",12,218
-"Mushroom, fresh, stewed (without salt)",19,393
-"Mushroom, dried, raw",136,326
-"Mushroom, dried, boiled, drained (without salt)",47,93
-"Mushroom, raw, canned in brine (drained)",4,24
-"Okra, fresh, raw",57,303
-"Okra, fresh, boiled, drained (without salt)",31,138
-"Okra, fresh, stewed (without salt)",56,280
-"Pumpkin, flesh, yellow w/o seeds, raw",12,178
-"Pumpkin, flesh, yellow w/o seeds, boiled, drained (without salt)",8,97
-"Pumpkin, leaves, raw",142,423
-"Pumpkin, leaves, boiled, drained (without salt)",81,201
-"Pumpkin, leaves, steamed (without salt)",111,313
-"Spider plant, leaves, raw",48,478
-"Spider plant, leaves, boiled, drained (without salt)",27,228
-"Spider plant, leaves, steamed (without salt)",37,353
-"Spinach, leaves, raw",72,570
-"Spinach, leaves, boiled, drained (without salt)",45,300
-"Spinach, leaves, stewed (without salt)",89,704
-"Spinach, Swiss chard, leaves, raw",78,348
-"Spinach, Swiss chard, leaves, boiled, drained (without salt)",49,183
-"Spinach, Swiss chard, leaves, stewed (without salt)",96,430
-"Squash, butternut, peeled, flesh, raw",16,332
-"Squash, butternut, peeled, flesh, boiled, drained (without salt)",11,186
-"Squash, butternut, peeled, flesh, steamed (without salt)",16,317
-"Squash, butternut, peeled, flesh, baked (without salt)",19,390
-"Stinging nettle, leaves, raw",133,524
-"Stinging nettle, leaves, boiled, drained (without salt)",76,250
-"Stinging nettle, leaves, steamed (without salt)",104,387
-"Sweet Potato (Leaves)",61,620
-"Tomato, green, raw",14,225
-"Tomato, green, boiled, drained (without salt)",10,144
-"Tomato, red, ripe, raw",9.5,126
-"Tomato, red, ripe, boiled, drained (without salt)",7,81
-"Tomato, canned, whole contents",11,204
-"Vine (African) spinach, picked leaves, raw",40,446
-"Vine (African) spinach, picked leaves, boiled, drained (without salt)",25,234
+"Code","Vegetable","Magnesium","Potassium"
+"4001","Amaranth, leaves, picked, raw",122,597
+"4039","Amaranth, leaves, picked, boiled, drained (without salt)",77,314
+"4040","Amaranth, leaves, picked, stewed (without salt)",151,737
+"4002","Bitter gourd, whole, different varieties, raw",20,210
+"4041","Bitter gourd, whole, different varieties, boiled, drained (without salt)",13,117
+"4003","Black (African) nightshade, indigenous, leaves, picked, raw",41,421
+"4042","Black (African) nightshade, indigenous, leaves, picked, boiled, drained (without salt)",24,200
+"4004","Broccoli, tops and stems, raw",21,336
+"4043","Black (African) nightshade, indigenous, leaves, picked, steamed",32.2826086956522,311.173913043478
+"4044","Broccoli, tops and stems, boiled, drained (without salt)",11,151
+"4045","Broccoli, tops and stems, steamed (without salt)",18,275
+"4005","Cabbage, leaf head, Chinese, raw",10,250
+"4046","Cabbage, leaf head, Chinese, boiled, drained (without salt)",6,128
+"4047","Cabbage, leaf head, Chinese, steamed (without salt)",9,217
+"4006","Cabbage, leaf head, red raw",29,241
+"4048","Cabbage, leaf head, red, boiled, drained (without salt)",18,123
+"4049","Cabbage, leaf head, red, stewed (without salt)",27,223
+"4007","Cabbage, leaf head, white, raw",9,313
+"4050","Cabbage, leaf head, white, boiled, drained (without salt)",6,159
+"4051","Cabbage, leaf head, white, stewed (without salt)",10,336
+"4008","Capsicum (sweet peper), green, raw",10,151
+"4052","Capsicum (sweet peper), green, boiled, drained (without salt)",7,87
+"4053","Capsicum (sweet peper), green, grilled (without salt and fat)",11,162
+"4054","Capsicum (sweet peper), green, baked (without salt)",10,157
+"4009","Capsicum (sweet peper), red, raw",6,174
+"4055","Capsicum (sweet peper), red, boiled, drained (without salt)",4,100
+"4056","Capsicum (sweet peper), red, grilled (without salt and fat)",6,187
+"4057","Capsicum (sweet peper), red, baked (without salt)",6,181
+"4010","Capsicum (sweet peper), yellow, raw",17,242
+"4058","Capsicum (sweet peper), yellow, boiled, drained (without salt)",12,139
+"4059","Capsicum (sweet peper), yellow, grilled (without salt and fat)",19,260
+"4060","Capsicum (sweet peper), yellow, baked (without salt)",18,252
+"4011","Carrot, peeled, raw",17,251
+"4061","Carrot, peeled, boiled, drained (without salt)",11,120
+"4062","Carrot, peeled, stewed (without salt)",17,261
+"4012","Cauliflower, tops and stems, raw",11,292
+"4063","Cauliflower, tops and stems, boiled, drained (without salt)",6,146
+"4013","Celery, stalk, raw",19,267
+"4064","Celery, stalk, boiled, drained (without salt)",13,148
+"4014","Courgette, green, unpeeled, raw",16,188
+"4065","Courgette, green, unpeeled, boiled, drained (without salt)",11,104
+"4015","Cowpea, leaves, picked, raw",47,485
+"4066","Cowpea, leaves, picked, boiled, drained (without salt)",27,231
+"4067","Cowpea, leaves, picked, steamed (without salt)",37,358
+"4016","Cucumber, green, unpeeled, raw",14,136
+"4017","Eggplant / Brinjal, different varieties, whole edible, raw",21,200
+"4068","Eggplant / Brinjal, different varieties, whole edible, boiled, drained (without salt)",14,108
+"4069","Eggplant / Brinjal, different varieties, whole edible, stewed (without salt)",26,250
+"4018","Jute mallow, picked leaves, raw",30,283
+"4070","Jute mallow, picked leaves, boiled, drained (without salt)",19,149
+"4071","Jute mallow, picked leaves, stewed (without salt)",37,349
+"4019","Kale, Ethiopian (kanzera), leaves, raw",54,639
+"4072","Kale, Ethiopian (kanzera), leaves, boiled, drained (without salt)",31,304
+"4073","Kale, Ethiopian (kanzera), leaves, steamed (without salt)",42,472
+"4020","Kale (sukuma wiki) raw",41,238
+"4074","Kale (sukuma wiki), boiled, drained (without salt)",23,113
+"4075","Kale (sukuma wiki), steamed (without salt)",32,176
+"4021","Leeks, bulb and stem, raw",14,202
+"4076","Leeks, bulb and stem, boiled, drained (without salt)",10,110
+"4022","Lettuce, not further defined, raw",24,201
+"4023","Mushroom, fresh, raw",15,318
+"4077","Mushroom, fresh, boiled, drained (without salt)",12,218
+"4078","Mushroom, fresh, stewed (without salt)",19,393
+"4024","Mushroom, dried, raw",136,326
+"4079","Mushroom, dried, boiled, drained (without salt)",47,93
+"4026","Okra, fresh, raw",57,303
+"4080","Okra, fresh, boiled, drained (without salt)",31,138
+"4081","Okra, fresh, stewed (without salt)",56,280
+"4027","Pumpkin, flesh, yellow w/o seeds, raw",12,178
+"4082","Pumpkin, flesh, yellow w/o seeds, boiled, drained (without salt)",8,97
+"4028","Pumpkin, leaves, raw",142,423
+"4084","Pumpkin, leaves, boiled, drained (without salt)",81,201
+"4085","Pumpkin, leaves, steamed (without salt)",111,313
+"4029","Spider plant, leaves, raw",48,478
+"4086","Spider plant, leaves, boiled, drained (without salt)",27,228
+"4087","Spider plant, leaves, steamed (without salt)",37,353
+"4030","Spinach, leaves, raw",72,570
+"4088","Spinach, leaves, boiled, drained (without salt)",45,300
+"4089","Spinach, leaves, stewed (without salt)",89,704
+"4031","Spinach, Swiss chard, leaves, raw",78,348
+"4090","Spinach, Swiss chard, leaves, boiled, drained (without salt)",49,183
+"4091","Spinach, Swiss chard, leaves, stewed (without salt)",96,430
+"4032","Squash, butternut, peeled, flesh, raw",16,332
+"4092","Squash, butternut, peeled, flesh, boiled, drained (without salt)",11,186
+"4093","Squash, butternut, peeled, flesh, steamed (without salt)",16,317
+"4094","Squash, butternut, peeled, flesh, baked (without salt)",19,390
+"4033","Stinging nettle, leaves, raw",133,524
+"4095","Stinging nettle, leaves, boiled, drained (without salt)",76,250
+"4096","Stinging nettle, leaves, steamed (without salt)",104,387
+"4034","Sweet Potato (Leaves)",61,620
+"4035","Tomato, green, raw",14,225
+"4097","Tomato, green, boiled, drained (without salt)",10,144
+"4036","Tomato, red, ripe, raw",9.5,126
+"4098","Tomato, red, ripe, boiled, drained (without salt)",7,81
+"4038","Vine (African) spinach, picked leaves, raw",40,446
+"4099","Vine (African) spinach, picked leaves, boiled, drained (without salt)",25,234
