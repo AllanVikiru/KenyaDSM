@@ -1,20 +1,17 @@
 ## Food Data Prep
 
-### install packages 
-```{r}
-install.packages('tidyverse', 'fs', 'readxl')
-```
-
 ### Set project directory, select food data and import
 
-```{r echo=TRUE}
+```{r, results = FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(fs)
 library(readxl)
 library(dplyr)
 food_dir <- 'D:/r/KenyaDSM/data/foods/'
 raw_foods <- as.data.frame(read_excel(paste(food_dir,"food_composition_tables.xlsx", sep="/"), 4))
-raw_foods
+```
+```{r}
+head(raw_foods)
 ```
 
 ### Clean data
@@ -24,36 +21,37 @@ raw_foods
 ```{r}
 raw_foods <- raw_foods[307:470, c(1, 2,12,14,16,17)]
 colnames(raw_foods) <- c('Code','Vegetable', 'Calcium', 'Magnesium', 'Potassium', 'Sodium')
-raw_foods
+head(raw_foods)
 ```
 
 #### 2. Check and remove nulls
 ```{r}
 sum(is.na(raw_foods$Vegetable) | (raw_foods$Vegetable==""))
 raw_foods <- raw_foods[!(is.na(raw_foods$Vegetable) | raw_foods$Vegetable==""), ]
-raw_foods
+sum(is.na(raw_foods$Vegetable) | (raw_foods$Vegetable==""))
 ```
 
 #### 3. Check and remove duplicate veg
 ```{r}
 sum(duplicated(raw_foods$Vegetable))
 raw_foods <- raw_foods[!duplicated(raw_foods$Vegetable), ] # remove duplicate foods
-raw_foods
+sum(duplicated(raw_foods$Vegetable))
+```
+#### 4. Check and remove canned veg
+```{r}
+sum(str_detect(raw_foods$Vegetable, 'canned'))
+raw_foods <- raw_foods[!str_detect(raw_foods$Vegetable, 'canned'), ] # remove canned foods
+sum(str_detect(raw_foods$Vegetable, 'canned'))
 ```
 
-#### 4. Check data types & convert nutrients to floats/ints
+#### 5. Check data types & convert nutrients to floats/ints
 
 ```{r}
 str(raw_foods)
 raw_foods <- raw_foods %>% mutate_at(c('Calcium', 'Magnesium', 'Potassium', 'Sodium'), as.numeric)
 str(raw_foods)
 ```
-#### 5. Check and remove canned veg
-```{r}
-sum(str_detect(raw_foods$Vegetable, 'canned'))
-raw_foods <- raw_foods[!str_detect(raw_foods$Vegetable, 'canned'), ] # remove canned foods
-raw_foods
-```
+
 
 
 ### EDA

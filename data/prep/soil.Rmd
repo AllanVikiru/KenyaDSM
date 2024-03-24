@@ -157,13 +157,7 @@ Algorithm 'Extract layer extent' finished
 
 #### Covariate prep and selection
 
-##### install packages
-
-```{r}
-install.packages('raster', 'terra', 'sf', 'psych', 'expss')
-```
-
-```{r}
+```{r results = FALSE, message=FALSE, warning=FALSE}
 # set directory and epsg
 proj_dir <- 'D:/r/KenyaDSM/data'
 epsg <- "epsg:4326"
