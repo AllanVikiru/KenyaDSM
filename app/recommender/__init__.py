@@ -22,7 +22,6 @@ def create_app():
     app.register_blueprint(modals.bp)
 
     #Add other blueprints if needed
-
     from . import auth
     app.register_blueprint(auth.bp)
 
