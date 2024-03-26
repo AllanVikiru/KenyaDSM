@@ -1,8 +1,13 @@
 from .db_connect import get_db
+import os
 from psycopg2.extras import RealDictCursor
 import rasterio
 
-# def read_map():
+dir = str(os.getcwd())
+
+def read_map():
+    k_map = os.path.join(dir, "static", "images", "k_map.tif")
+    mg_map = os.path.join(dir, "static", "images", "mg_map.tif")
 
 def db_get_all_images():
     db = get_db()

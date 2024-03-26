@@ -10,3 +10,8 @@ main > .container {
     font-weight: 400;
     font-style: normal;
 }
+
+#map{
+    width: 1200.0px;
+    height: 600.0px;
+}
