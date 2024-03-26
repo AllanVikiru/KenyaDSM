@@ -162,7 +162,7 @@ mg_mlrkpred <- projectRaster(mg_mlrkpred, crs = wsg84)
 ```
 #### export models
 ```{r}
-model_path <- paste(proj_dir,"maps/models", sep="/")
+model_path <- paste(proj_dir,"models", sep="/")
 saveRDS(mg_mlr, file = paste(model_path, "mg_mlr.Rds", sep="/"))
 saveRDS(mg_svm, file = paste(model_path, "mg_svm.Rds", sep="/"))
 saveRDS(mg_ok, file = paste(model_path, "mg_ok.Rds", sep="/"))
