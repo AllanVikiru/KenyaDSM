@@ -9,14 +9,47 @@
 {% block contents %}
 <div class="container">
 
-    <h1 style="margin-top:37px;">Location Selector</h2>
-    <!-- Include Google Map -->
+    <h1 style="margin-top:37px;">Location Selector</h1>
+    <!--  Leaflet Map -->
     
-    <p class="mb-3">Pin or search for a location within the <b>orange region</b> of the map below: </p>
+    <p class="mb-3">Pin or search for a location within the <b>orange region</b> of the map below, and click the popup that appears.</p>
     
-    <div id="map"></div>
+    <div class="mb-3" id="map"></div>
 
-    <h4 style="margin-top:37px;">Previous Recommendations</h2>
+    <h1 style="margin-top:37px;">Food Generator </h1>
+
+    <form class="row g-3">
+      <div class="col-md-3">
+        <label for="latitude" class="form-label">Latitude</label>
+        <input type="text" class="form-control" id="latitude" disabled readonly>
+      </div>
+      <div class="col-md-3">
+        <label for="longitude" class="form-label">Longitude</label>
+        <input type="text" class="form-control" id="longitude" disabled readonly>
+      </div>
+      <div class="col-md-3">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="magnesium">
+        <label class="form-check-label" for="magnesium">
+          Magenesium Content
+        </label>
+      </div>
+      <div class="col-md-3">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="potassium">
+        <label class="form-check-label" for="potassium">
+          Potassium Content
+        </label>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-success">Generate</button>
+      </div>
+    </form>
+
+    <div style="margin-top:21px;" class="col-12">
+      <b><label for="rec-foods" class="form-label">Recommended Foods</label> </b>
+      <textarea class="form-control" rows="4" id="rec-foods" placeholder="Generated foods will appear here" disabled readonly></textarea>
+    </div>
+    
+    <h2 style="margin-top:37px;">Previous Recommendations</h2>
 
     <!-- Table : Location, Foods, Feedback -->
 
