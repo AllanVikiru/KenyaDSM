@@ -1,6 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "./public/recommender/routes",
-        "./public/recommender/model"
-    ]
-}

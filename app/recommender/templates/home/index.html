@@ -9,57 +9,30 @@
 {% block contents %}
 <div class="container">
 
-    <h1 style="margin-top:37px;">Location Selector</h1>
+    <h2 style="margin-top:37px;">Location Selector</h2>
     <!--  Leaflet Map -->
     
     <p class="mb-3">Pin or search for a location within the <b>orange region</b> of the map below, and click the popup that appears.</p>
     
     <div class="mb-3" id="map"></div>
 
-    <h1 style="margin-top:37px;">Food Generator </h1>
-
-    <form class="row g-3">
-      <div class="col-md-3">
-        <label for="latitude" class="form-label">Latitude</label>
-        <input type="text" class="form-control" id="latitude" disabled readonly>
-      </div>
-      <div class="col-md-3">
-        <label for="longitude" class="form-label">Longitude</label>
-        <input type="text" class="form-control" id="longitude" disabled readonly>
-      </div>
-      <div class="col-md-3">
-        <input class="form-check-input" type="radio" id="magnesium">
-        <label class="form-check-label" for="magnesium">
-          Derive Magenesium Content
-        </label>
-      </div>
-      <div class="col-md-3">
-        <input class="form-check-input" type="radio" id="potassium">
-        <label class="form-check-label" for="potassium">
-          Derive Potassium Content
-        </label>
-      </div>
-      <div class="col-12">
-        <button type="submit" class="btn btn-success">Generate</button>
-      </div>
-    </form>
-
-    <div style="margin-top:21px;" class="col-12">
-      <b><label for="rec-foods" class="form-label">Recommended Foods</label> </b>
-      <textarea class="form-control" rows="4" id="rec-foods" placeholder="Generated foods will appear here" disabled readonly></textarea>
-    </div>
+    <h2 style="margin-top:37px;">Food Generator </h2>
     
-    <h2 style="margin-top:37px;">Previous Recommendations</h2>
+    {% include "forms/generator.html" %}
+    
+    <h3 style="margin-top:37px;">Previous Recommendations</h3>
 
     <!-- Table : Location, Foods, Feedback -->
 
-    <h2 style="margin-top:37px;">All Foods</h2>
+    <h3 style="margin-top:37px;">All Foods</h3>
 
     <!-- <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
       {%for image in images%}
       <div class="col">
         <div class="card h-100">
-          <a href="{{url_for('bl_photoalbum.imagedetails', img_id=image['img_id'])}}"><img src="{{ url_for('static', filename='images/cats_thmbs/'+image['img_filename'])}}" class="card-img-top" alt="{{image['img_caption']}}"></a>
+          <a href="{{url_for('bl_photoalbum.imagedetails', img_id=image['img_id'])}}">
+            <img src="{{ url_for('static', filename='images/cats_thmbs/'+image['img_filename'])}}" class="card-img-top" alt="{{image['img_caption']}}">
+          </a>
           <div class="card-body">
             <h4 class="card-title">{{image['img_name'] if image['img_name'] else image['img_filename']}}</h4>
             <p class="card-text">{{image['img_caption'] if image['img_caption'] else '--'}}</p>          

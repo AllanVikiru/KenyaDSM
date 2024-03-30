@@ -1,8 +1,8 @@
 import os
 
 from flask import Flask
-from .jinjafilters import *
-from .errorhandlers import *
+from .src.jinjafilters import *
+from .src.errorhandlers import *
 
 def create_app():
     # create and configure the app
@@ -12,17 +12,17 @@ def create_app():
     )
 
     #ADDS HANDLER TO CLOSE DATABASE AT END OF SESSION!
-    from . import db_connect
+    from .src import db_connect
     db_connect.init_app(app)
 
     from . import routes
     app.register_blueprint(routes.bp)
 
-    from . import modals
+    from .src import modals
     app.register_blueprint(modals.bp)
 
     #Add other blueprints if needed
-    from . import auth
+    from .src import auth
     app.register_blueprint(auth.bp)
 
     #ADDS HANDLER FOR ERRORs

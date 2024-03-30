@@ -5,9 +5,15 @@ import rasterio
 
 dir = str(os.getcwd())
 
-def read_map():
-    k_map = os.path.join(dir, "static", "images", "k_map.tif")
-    mg_map = os.path.join(dir, "static", "images", "mg_map.tif")
+# def read_map():
+#     lat, lon = 0
+#     k_map = rasterio.open(os.path.join(dir, "static", "images", "k_map.tif"))
+#     mg_map = rasterio.open(os.path.join(dir, "static", "images", "mg_map.tif"))
+#     mg_row, mg_col = mg_map.index(lat,lon)
+#     k_row, k_col = k_map.index(lat,lon)
+#     print("ExMg value on long/lat [",lon, lat,"]:",mg_map.read(1)[mg_row, mg_col])
+#     print("ExK value on long/lat [",lon, lat,"]:",k_map.read(1)[k_row, k_col],"\n")
+#     return k_map.crs
 
 def db_get_all_images():
     db = get_db()
@@ -49,5 +55,3 @@ def db_get_image_details(img_id):
     cur.close()
 
     return record
-
-

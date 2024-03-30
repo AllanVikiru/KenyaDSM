@@ -1,11 +1,11 @@
 import folium
 
 from flask import (
-    Blueprint, render_template, render_template_string, request, send_from_directory
+    Blueprint, render_template, request, send_from_directory
 )
-from recommender.layoutUtils import *
-from recommender.auth import *
-from .model import *
+from .src.layoutUtils import *
+from .src.auth import *
+from .src.model import *
 
 bp = Blueprint('routes', __name__)
 
@@ -13,6 +13,11 @@ bp = Blueprint('routes', __name__)
 
 def index():
     return render_template('home/index.html')
+
+# @bp.route('/foods',methods=('GET', 'POST'))
+# def generate():
+#     foods = read_map()
+#     return render_template('forms/generator.html', foods=foods)
 
 #MANAGE sitemap and robots calls 
 #These files are usually in root, but for Flask projects must
