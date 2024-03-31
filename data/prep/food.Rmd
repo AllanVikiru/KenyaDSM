@@ -37,11 +37,11 @@ sum(duplicated(raw_foods$Vegetable))
 raw_foods <- raw_foods[!duplicated(raw_foods$Vegetable), ] # remove duplicate foods
 sum(duplicated(raw_foods$Vegetable))
 ```
-#### 4. Check and remove canned veg
+#### 4. Check and remove cooked veg
 ```{r}
-sum(str_detect(raw_foods$Vegetable, 'canned'))
-raw_foods <- raw_foods[!str_detect(raw_foods$Vegetable, 'canned'), ] # remove canned foods
-sum(str_detect(raw_foods$Vegetable, 'canned'))
+sum(str_detect(raw_foods$Vegetable, 'canned|boiled|steamed|stewed|grilled|baked'))
+raw_foods <- raw_foods[!str_detect(raw_foods$Vegetable, 'canned|boiled|steamed|stewed|grilled|baked'), ] # remove canned foods
+sum(str_detect(raw_foods$Vegetable, 'canned|boiled|steamed|stewedgrilled|baked'))
 ```
 
 #### 5. Check data types & convert nutrients to floats/ints
