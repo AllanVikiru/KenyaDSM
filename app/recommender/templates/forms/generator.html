@@ -1,4 +1,4 @@
-<form class="row gy-2 gx-3 align-items-center" style="margin-top:16px;" id="rec-form" method="post">
+<form class="row gy-2 gx-3 align-items-center" style="margin-top:16px;" id="rec-form" method="post" action="">
     <div class="col-auto">
         <label class="visually-hidden" for="latitude">Latitude</label>
         <div class="input-group">
@@ -14,11 +14,11 @@
       </div>
     </div>
     <div class="col-auto">
-      <input class="form-check-input" type="radio" name="map" id="k" value="k" required>
+      <input class="form-check-input" type="radio" name="map" id="k" value="potassium" required>
       <label class="form-check-label" for="k">Derive Soil Potassium</label>
     </div>
     <div class="col-auto">
-      <input class="form-check-input" type="radio" name="map" id="mg" value="mg">
+      <input class="form-check-input" type="radio" name="map" id="mg" value="magnesium">
       <label class="form-check-label" for="mg">Derive Soil Magnesium</label>
     </div>
     <div class="col-auto">
@@ -26,7 +26,33 @@
   </div>
 </form>
 
-<div style="margin-top:21px;" class="col-12" id="vegs">
- <b><label for="rec-foods" class="form-label">Recommended Vegetables</label> </b>
- <textarea class="form-control" rows="4" id="rec-foods" disabled readonly>{{vegs}}</textarea>
+<div style="margin-top:21px;" class="col-12" id="vegetables">
+ <b>
+  <label for="rec-foods" class="form-label">Recommended Vegetables at Lat/Long</label> 
+  [ {{latitude}} ; {{longitude}} ] :: {{content}}
+</b>
+ <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Vegetable</th>
+          <th scope="col">Magnesium Content</th>
+          <th scope="col">Potassium Content</th>
+          <!-- <th scope="col">Select</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        {%for veg in vegs%}
+        <tr>
+          <td>{{veg['code']}}</td>
+          <td>{{veg['vegetable']}}</td>
+          <td>{{veg['magnesium']}}</td>
+          <td>{{veg['potassium']}}</td>
+          <!-- <td><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked></td> -->
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
 </div>

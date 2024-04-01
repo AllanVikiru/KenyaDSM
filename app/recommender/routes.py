@@ -7,20 +7,20 @@ from .src.model import *
 
 bp = Blueprint('routes', __name__)
 
-@bp.route('/',methods=('GET', 'POST'))
-
+@bp.route('/', methods=('GET', 'POST'))
 def index():
+    foods = get_all_foods()
+
     if request.method == 'GET':
-        return render_template('home/index.html')
+        return render_template('home/index.html', foods=foods)
+    
     if request.method == 'POST':
         latitude = request.form['latitude']
         longitude = request.form['longitude']
-        nut = request.form['map']
+        map = request.form['map']
 
-        predict_veg(latitude, longitude, nut)
-        return render_template('home/index.html')
+        nutrients = predict_veg(latitude, longitude, map) # pass latitude longitude and map
+        content = nutrients['soil']
+        vegs = get_foods(nutrients['category'], map)
 
-# @bp.route('/foods',methods=('GET', 'POST'))
-# def generate():
-#     foods = read_map()
-#     return render_template('forms/generator.html', foods=foods)
+        return render_template('home/index.html', vegs=vegs, foods=foods, latitude=latitude, longitude=longitude, content=content, anchor='vegetables')

@@ -33,8 +33,8 @@ function onMapClick(e){
     .setLatLng(e.latlng)
     .setContent("Latitude: "+e.latlng.lat+"<br>Longitude: "+e.latlng.lng)
     .openOn(map);
-    console.log(e.latlng);
-    // latfield.setAttribute("value", e.latlng.lat)
-    // longfield.setAttribute("value", e.latlng.lng)
+    console.log(e.latlng.lat);
+    //latfield.setAttribute("value", e.latlng.lat)
+    //longfield.setAttribute("value", e.latlng.lng)
 }
 map.on('click', onMapClick);

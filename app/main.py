@@ -7,3 +7,6 @@ os.environ["SESSION_SECRET"]=str(key)
 
 app = create_app()
 app.run(debug=True)
+
+# TODO: ERROR HANDLING AND USER CONFIRMATION - MODALS
+# TODO: DATATABLES: SELECT RECS AND SET TO DB
