@@ -1,24 +1,32 @@
-<form class="row gy-2 gx-3 align-items-center" style="margin-top:16px;">
+<form class="row gy-2 gx-3 align-items-center" style="margin-top:16px;" id="rec-form" method="post">
     <div class="col-auto">
         <label class="visually-hidden" for="latitude">Latitude</label>
         <div class="input-group">
           <div class="input-group-text">Lat.</div>
-          <input type="text" class="form-control" id="latitude" disabled readonly>
+          <input type="text" class="form-control" id="latitude" name="latitude" required>
         </div>
     </div>
     <div class="col-auto">
       <label class="visually-hidden" for="longitude">Longitude</label>
       <div class="input-group">
         <div class="input-group-text">Long.</div>
-        <input type="text" class="form-control" id="longitude" disabled readonly>
+        <input type="text" class="form-control" id="longitude" name="longitude" required>
       </div>
     </div>
     <div class="col-auto">
-        <button type="submit" class="btn btn-success">Generate</button>
+      <input class="form-check-input" type="radio" name="map" id="k" value="k" required>
+      <label class="form-check-label" for="k">Derive Soil Potassium</label>
     </div>
+    <div class="col-auto">
+      <input class="form-check-input" type="radio" name="map" id="mg" value="mg">
+      <label class="form-check-label" for="mg">Derive Soil Magnesium</label>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-success">Generate</button>
+  </div>
 </form>
 
-<div style="margin-top:21px;" class="col-12">
- <b><label for="rec-foods" class="form-label">Recommended Foods</label> </b>
- <textarea class="form-control" rows="4" id="rec-foods" disabled readonly></textarea>
+<div style="margin-top:21px;" class="col-12" id="vegs">
+ <b><label for="rec-foods" class="form-label">Recommended Vegetables</label> </b>
+ <textarea class="form-control" rows="4" id="rec-foods" disabled readonly>{{vegs}}</textarea>
 </div>

@@ -9,38 +9,38 @@
 {% block contents %}
 <div class="container">
 
-    <h2 style="margin-top:37px;">Location Selector</h2>
-    <!--  Leaflet Map -->
-    
-    <p class="mb-3">Pin or search for a location within the <b>orange region</b> of the map below, and click to generate a popup of coordinates.</p>
-    
-    <div class="mb-3" id="map"></div>
+  <h2 style="margin-top:37px;">Location Selector</h2>
+  <!--  Leaflet Map -->
 
-    <h2 style="margin-top:37px;">Food Generator </h2>
-    
-    {% include "forms/generator.html" %}
-    
-    <h3 style="margin-top:37px;">Previous Recommendations</h3>
+  <p class="mb-3">Pin or search for a location within the <b>orange region</b> of the map below, and copy the generated popup of coordinates to the input boxes.</p>
 
-    <!-- Table : Location, Foods, Feedback -->
+  <div class="mb-3" id="map"></div>
 
-    <h3 style="margin-top:37px;">All Foods</h3>
+  <h2 style="margin-top:37px;">Food Generator </h2>
 
-    <!-- <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
-      {%for image in images%}
-      <div class="col">
-        <div class="card h-100">
-          <a href="{{url_for('bl_photoalbum.imagedetails', img_id=image['img_id'])}}">
-            <img src="{{ url_for('static', filename='images/cats_thmbs/'+image['img_filename'])}}" class="card-img-top" alt="{{image['img_caption']}}">
-          </a>
-          <div class="card-body">
-            <h4 class="card-title">{{image['img_name'] if image['img_name'] else image['img_filename']}}</h4>
-            <p class="card-text">{{image['img_caption'] if image['img_caption'] else '--'}}</p>          
-          </div>
-        </div>    
-      </div>
-      {%endfor%}
-    </div> -->
-  
+  {% include "forms/generator.html" %}
+
+  <h3 style="margin-top:37px;">Previous Recommendations</h3>
+
+  <!-- Table : Location, Foods, Feedback -->
+
+  <h3 style="margin-top:37px;">All Foods</h3>
+
+  <!-- <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
+    {%for image in images%}
+    <div class="col">
+      <div class="card h-100">
+        <a href="{{url_for('bl_photoalbum.imagedetails', img_id=image['img_id'])}}">
+          <img src="{{ url_for('static', filename='images/cats_thmbs/'+image['img_filename'])}}" class="card-img-top" alt="{{image['img_caption']}}">
+        </a>
+        <div class="card-body">
+          <h4 class="card-title">{{image['img_name'] if image['img_name'] else image['img_filename']}}</h4>
+          <p class="card-text">{{image['img_caption'] if image['img_caption'] else '--'}}</p>          
+        </div>
+      </div>    
+    </div>
+    {%endfor%}
+  </div> -->
+
 </div>
 {% endblock %}

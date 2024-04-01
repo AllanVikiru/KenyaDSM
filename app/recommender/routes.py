@@ -1,5 +1,3 @@
-import folium
-
 from flask import (
     Blueprint, render_template, request, send_from_directory
 )
@@ -12,7 +10,15 @@ bp = Blueprint('routes', __name__)
 @bp.route('/',methods=('GET', 'POST'))
 
 def index():
-    return render_template('home/index.html')
+    if request.method == 'GET':
+        return render_template('home/index.html')
+    if request.method == 'POST':
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        nut = request.form['map']
+
+        predict_veg(latitude, longitude, nut)
+        return render_template('home/index.html')
 
 # @bp.route('/foods',methods=('GET', 'POST'))
 # def generate():
