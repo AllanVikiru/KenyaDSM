@@ -7,6 +7,11 @@ from .src.model import *
 
 bp = Blueprint('routes', __name__)
 
+display_format = dict();
+display_format['opener'] = " [ "
+display_format['midpoint'] = " ; "
+display_format['closer'] = " ] :: "
+
 @bp.route('/', methods=('GET', 'POST'))
 def index():
     foods = get_all_foods()
@@ -23,4 +28,11 @@ def index():
         content = nutrients['soil']
         vegs = get_foods(nutrients['category'], map)
 
-        return render_template('home/index.html', vegs=vegs, foods=foods, latitude=latitude, longitude=longitude, content=content, anchor='vegetables')
+        opener = display_format['opener']
+        midpoint = display_format['midpoint']
+        closer = display_format['closer']
+
+        return render_template('home/index.html', 
+                               vegs=vegs, foods=foods, 
+                               latitude=latitude, longitude=longitude, opener = opener, midpoint = midpoint, closer = closer,
+                               content=content, anchor='vegetables')

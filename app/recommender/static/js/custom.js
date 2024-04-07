@@ -25,8 +25,8 @@ const polygon = L.polygon([
 
 // popup to generate latlong for map and set to latitude and long fields
 const popup = L.popup();
-//const latfield = document.getElementById("latitude")
-//const longfield = document.getElementById("longitude")
+const latfield = document.getElementById("latitude")
+const longfield = document.getElementById("longitude")
 
 function onMapClick(e){
     popup
@@ -34,7 +34,7 @@ function onMapClick(e){
     .setContent("Latitude: "+e.latlng.lat+"<br>Longitude: "+e.latlng.lng)
     .openOn(map);
     console.log(e.latlng.lat);
-    //latfield.setAttribute("value", e.latlng.lat)
-    //longfield.setAttribute("value", e.latlng.lng)
+    latfield.setAttribute("value", e.latlng.lat)
+    longfield.setAttribute("value", e.latlng.lng)
 }
 map.on('click', onMapClick);

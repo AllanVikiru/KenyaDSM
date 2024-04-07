@@ -3,14 +3,14 @@
         <label class="visually-hidden" for="latitude">Latitude</label>
         <div class="input-group">
           <div class="input-group-text">Lat.</div>
-          <input type="text" class="form-control" id="latitude" name="latitude" required>
+          <input type="text" class="form-control" id="latitude" name="latitude" readonly required>
         </div>
     </div>
     <div class="col-auto">
       <label class="visually-hidden" for="longitude">Longitude</label>
       <div class="input-group">
         <div class="input-group-text">Long.</div>
-        <input type="text" class="form-control" id="longitude" name="longitude" required>
+        <input type="text" class="form-control" id="longitude" name="longitude" readonly required>
       </div>
     </div>
     <div class="col-auto">
@@ -29,7 +29,7 @@
 <div style="margin-top:21px;" class="col-12" id="vegetables">
  <b>
   <label for="rec-foods" class="form-label">Recommended Vegetables at Lat/Long</label> 
-  [ {{latitude}} ; {{longitude}} ] :: {{content}}
+  {{opener}} {{latitude}} {{midpoint}} {{longitude}} {{closer}} {{content}}
 </b>
  <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
     <table class="table">
