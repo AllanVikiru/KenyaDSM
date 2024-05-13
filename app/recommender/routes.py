@@ -1,7 +1,6 @@
 from flask import (
     Blueprint, render_template, request
 )
-from .src.auth import *
 from .src.model import *
 
 bp = Blueprint('routes', __name__)
